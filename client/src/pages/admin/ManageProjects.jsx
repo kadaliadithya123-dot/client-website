@@ -78,7 +78,7 @@ const ManageProjects = () => {
     setForm({
       title: p.title,
       description: p.description,
-      domain: p.domain,
+      domain: domains.includes(p.domain) ? p.domain : domains[0],
       technologies: (p.technologies || []).join(", "),
       videoLink: p.videoLink || "",
       difficulty: p.difficulty,
