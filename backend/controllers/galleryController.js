@@ -40,7 +40,7 @@ const uploadGalleryImages = async (req, res, next) => {
     }
     const { category, title = "" } = req.body;
     const docs = await Gallery.insertMany(
-      req.files.map((f) => ({ image: `/uploads/${f.filename}`, category, title }))
+      req.files.map((f) => ({ image: f.path, category, title }))
     );
     res.status(201).json({ success: true, data: docs });
   } catch (err) {

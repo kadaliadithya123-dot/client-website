@@ -61,7 +61,7 @@ const createCourse = async (req, res, next) => {
     const body = { ...req.body };
     if (typeof body.technologies === "string") body.technologies = body.technologies.split(",").map((t) => t.trim());
     if (typeof body.syllabus === "string") body.syllabus = body.syllabus.split("\n").map((s) => s.trim()).filter(Boolean);
-    if (req.file) body.image = `/uploads/${req.file.filename}`;
+    if (req.file) body.image = req.file.path;
     body.slug = slugify(body.title || "");
 
     const course = await Course.create(body);
@@ -80,7 +80,7 @@ const updateCourse = async (req, res, next) => {
     if (typeof body.technologies === "string") body.technologies = body.technologies.split(",").map((t) => t.trim());
     if (typeof body.syllabus === "string") body.syllabus = body.syllabus.split("\n").map((s) => s.trim()).filter(Boolean);
     if (req.file) {
-      body.image = `/uploads/${req.file.filename}`;
+      body.image = req.file.path;
     } else if (body.removeImage === "true") {
       body.image = "";
     }

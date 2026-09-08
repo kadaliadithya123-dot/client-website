@@ -62,9 +62,9 @@ const createProject = async (req, res, next) => {
     if (typeof body.technologies === "string") body.technologies = body.technologies.split(",").map((t) => t.trim());
     body.slug = slugify(body.title || "");
 
-    if (req.files?.thumbnail?.[0]) body.thumbnail = `/uploads/${req.files.thumbnail[0].filename}`;
-    if (req.files?.images?.length) body.images = req.files.images.map((f) => `/uploads/${f.filename}`);
-    if (req.files?.pdf?.[0]) body.pdfUrl = `/uploads/${req.files.pdf[0].filename}`;
+    if (req.files?.thumbnail?.[0]) body.thumbnail = req.files.thumbnail[0].path;
+    if (req.files?.images?.length) body.images = req.files.images.map((f) => f.path);
+    if (req.files?.pdf?.[0]) body.pdfUrl = req.files.pdf[0].path;
 
     const project = await Project.create(body);
     res.status(201).json({ success: true, data: project });
@@ -89,13 +89,13 @@ const updateProject = async (req, res, next) => {
     if (body.title) body.slug = slugify(body.title);
 
     if (req.files?.thumbnail?.[0]) {
-      body.thumbnail = `/uploads/${req.files.thumbnail[0].filename}`;
+      body.thumbnail = req.files.thumbnail[0].path;
     } else if (body.removeThumbnail === "true") {
       body.thumbnail = "";
     }
 
     if (req.files?.pdf?.[0]) {
-      body.pdfUrl = `/uploads/${req.files.pdf[0].filename}`;
+      body.pdfUrl = req.files.pdf[0].path;
     } else if (body.removePdf === "true") {
       body.pdfUrl = "";
     }
@@ -106,7 +106,7 @@ const updateProject = async (req, res, next) => {
       images = images.filter((img) => !toRemove.includes(img));
     }
     if (req.files?.images?.length) {
-      images = [...images, ...req.files.images.map((f) => `/uploads/${f.filename}`)];
+      images = [...images, ...req.files.images.map((f) => f.path)];
     }
     body.images = images;
 
