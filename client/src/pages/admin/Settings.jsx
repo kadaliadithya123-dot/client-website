@@ -85,6 +85,27 @@ const Settings = () => {
           className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
         />
 
+        <h2 className="pt-2 text-sm font-semibold uppercase tracking-wide text-steel">Homepage Stats</h2>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            ["studentsTrained", "Students Trained"],
+            ["projectsDelivered", "Projects Delivered"],
+            ["industryPartners", "Industry Partners"],
+            ["branchesSupported", "Branches Supported"],
+          ].map(([field, label]) => (
+            <input
+              key={field}
+              type="number"
+              min="0"
+              value={settings[field] ?? ""}
+              onChange={(e) => handleChange(field, e.target.value)}
+              placeholder={label}
+              aria-label={label}
+              className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+            />
+          ))}
+        </div>
+
         <h2 className="pt-2 text-sm font-semibold uppercase tracking-wide text-steel">Contact Details</h2>
         <input
           value={settings.address || ""}
