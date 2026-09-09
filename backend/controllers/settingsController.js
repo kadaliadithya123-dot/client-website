@@ -1,12 +1,5 @@
 const Settings = require("../models/Settings");
 
-const defaultStats = {
-  studentsTrained: 500,
-  projectsDelivered: 120,
-  industryPartners: 15,
-  branchesSupported: 8,
-};
-
 const STAT_DEFAULTS = {
   studentsTrained: 500,
   projectsDelivered: 120,
@@ -69,41 +62,43 @@ const getSettings = async (req, res, next) => {
   }
 };
 
+// Only these fields can ever be written by a client. Everything else in the
+// request body, including persisted document metadata, is ignored.
+const EDITABLE_FIELDS = [
+  "companyName",
+  "tagline",
+  "about",
+  "address",
+  "phone",
+  "email",
+  "whatsapp",
+  "mapEmbedUrl",
+  "studentsTrained",
+  "projectsDelivered",
+  "industryPartners",
+  "branchesSupported",
+];
+const EDITABLE_SOCIAL_FIELDS = ["facebook", "instagram", "linkedin", "youtube", "twitter"];
+const NUMERIC_FIELDS = ["studentsTrained", "projectsDelivered", "industryPartners", "branchesSupported"];
+
 // @desc  Update site settings
 // @route PUT /api/settings
 // @access Private
 const updateSettings = async (req, res, next) => {
   try {
     const settings = await getOrCreateSettings();
-    const { stats, social, ...fields } = req.body;
 
-    Object.assign(settings, fields);
+    for (const field of EDITABLE_FIELDS) {
+      if (req.body[field] === undefined) continue;
+      settings[field] = NUMERIC_FIELDS.includes(field) ? Number(req.body[field]) || 0 : req.body[field];
+    }
 
-    const incomingRootStats = {
-      studentsTrained: fields.studentsTrained,
-      projectsDelivered: fields.projectsDelivered,
-      industryPartners: fields.industryPartners,
-      branchesSupported: fields.branchesSupported,
-    };
-
-    const finalStats = {
-      ...defaultStats,
-      ...(settings.stats?.toObject?.() || settings.stats || {}),
-      ...incomingRootStats,
-      ...(stats || {}),
-    };
-
-    Object.keys(finalStats).forEach((key) => {
-      const value = Number(finalStats[key]) || 0;
-      settings[key] = value;
-      settings.stats = { ...(settings.stats?.toObject?.() || settings.stats || {}), [key]: value };
-    });
-
-    settings.markModified("stats");
-
-    if (social) {
-      settings.social = { ...(settings.social?.toObject?.() || settings.social || {}), ...social };
-      settings.markModified("social");
+    if (req.body.social && typeof req.body.social === "object") {
+      for (const field of EDITABLE_SOCIAL_FIELDS) {
+        if (req.body.social[field] !== undefined) {
+          settings.social[field] = req.body.social[field];
+        }
+      }
     }
 
     await settings.save();
