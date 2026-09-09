@@ -39,7 +39,7 @@ const seedDefaultData = async () => {
       tagline: "Bridging Theory and Industrial Innovation",
       about:
         "Sritech Solutions focuses on Embedded Systems - specialized computing systems designed to perform dedicated functions within larger devices.",
-      address: "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016",
+      address: "Sritech Solutions, Ratnaveni Complex, Opp. Budhil Park Hotel, 1st Lane, Dwarakanagar, Visakhapatnam - 530016",
       phone: "99488-32456 / 86886-32456",
       email: "sritechsolutions9@gmail.com",
       whatsapp: "+91 99488-32456",

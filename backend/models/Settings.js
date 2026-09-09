@@ -6,7 +6,7 @@ const settingsSchema = new mongoose.Schema(
     companyName: { type: String, default: "Sritech Solutions" },
     tagline: { type: String, default: "Bridging Theory and Industrial Innovation" },
     about: { type: String, default: "" },
-    address: { type: String, default: "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016" },
+    address: { type: String, default: "Sritech Solutions, Ratnaveni Complex, Opp. Budhil Park Hotel, 1st Lane, Dwarakanagar, Visakhapatnam - 530016" },
     phone: { type: String, default: "99488-32456 / 86886-32456" },
     email: { type: String, default: "sritechsolutions9@gmail.com" },
     whatsapp: { type: String, default: "+91 99488-32456" },

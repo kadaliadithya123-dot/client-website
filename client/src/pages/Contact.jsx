@@ -45,7 +45,7 @@ const Contact = () => {
           <div className="mt-5 space-y-4 text-sm text-steel">
             <p className="flex items-start gap-3">
               <HiOutlineLocationMarker className="mt-0.5 shrink-0 text-brand-500" size={20} />
-              {settings?.address || "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}
+              {settings?.address || "Sritech Solutions, Ratnaveni Complex, Opp. Budhil Park Hotel, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}
             </p>
             <p className="flex items-center gap-3">
               <HiOutlinePhone className="text-brand-500" size={20} />
@@ -62,7 +62,7 @@ const Contact = () => {
               title="Sritech Solutions location"
               src={
                 settings?.mapEmbedUrl ||
-                `https://www.google.com/maps?q=${encodeURIComponent(settings?.address || "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016")}&output=embed`
+                "https://www.google.com/maps?q=17.7256389,83.3068333&output=embed"
               }
               width="100%"
               height="100%"

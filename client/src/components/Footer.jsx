@@ -74,7 +74,7 @@ const Footer = () => {
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-wide text-white">Contact</h4>
           <ul className="mt-4 space-y-2 text-sm">
-            <li>{settings?.address || "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}</li>
+            <li>{settings?.address || "Sritech Solutions, Ratnaveni Complex, Opp. Budhil Park Hotel, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}</li>
             <li>{settings?.phone || "99488-32456 / 86886-32456"}</li>
             <li>{settings?.email || "sritechsolutions9@gmail.com"}</li>
           </ul>
