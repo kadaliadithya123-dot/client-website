@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { HiEye, HiEyeOff } from "react-icons/hi";
+import { HiEye, HiEyeOff, HiOutlineHome } from "react-icons/hi";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 const Login = () => {
@@ -83,6 +83,14 @@ const Login = () => {
             {submitting ? "Signing in..." : "Sign In"}
           </button>
         </form>
+
+        <Link
+          to="/"
+          className="mt-5 flex items-center justify-center gap-2 text-sm text-mist/60 transition-colors hover:text-white"
+        >
+          <HiOutlineHome size={16} />
+          Return to home
+        </Link>
       </div>
     </div>
   );
