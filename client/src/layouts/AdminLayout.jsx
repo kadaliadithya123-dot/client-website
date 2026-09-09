@@ -8,6 +8,7 @@ import {
   HiOutlinePhotograph,
   HiOutlineMail,
   HiOutlineClipboardList,
+  HiOutlinePencilAlt,
   HiOutlineCog,
   HiOutlineLogout,
   HiMenu,
@@ -22,6 +23,7 @@ const navItems = [
   { to: "/admin/gallery", label: "Manage Gallery", icon: HiOutlinePhotograph },
   { to: "/admin/messages", label: "Contact Messages", icon: HiOutlineMail },
   { to: "/admin/enrollments", label: "Enrollments", icon: HiOutlineClipboardList },
+  { to: "/admin/content", label: "Site Content", icon: HiOutlinePencilAlt },
   { to: "/admin/settings", label: "Settings", icon: HiOutlineCog },
 ];
 

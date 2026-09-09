@@ -20,6 +20,7 @@ import ManageProjects from "./pages/admin/ManageProjects.jsx";
 import ManageGallery from "./pages/admin/ManageGallery.jsx";
 import ManageMessages from "./pages/admin/ManageMessages.jsx";
 import ManageEnrollments from "./pages/admin/ManageEnrollments.jsx";
+import SiteContent from "./pages/admin/SiteContent.jsx";
 import AdminSettings from "./pages/admin/Settings.jsx";
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route path="gallery" element={<ManageGallery />} />
         <Route path="messages" element={<ManageMessages />} />
         <Route path="enrollments" element={<ManageEnrollments />} />
+        <Route path="content" element={<SiteContent />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>
     </Routes>

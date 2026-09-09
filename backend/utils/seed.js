@@ -7,6 +7,7 @@ const Admin = require("../models/Admin");
 const Course = require("../models/Course");
 const Project = require("../models/Project");
 const Settings = require("../models/Settings");
+const Content = require("../models/Content");
 
 const run = async () => {
   await connectDB();
@@ -96,6 +97,62 @@ const run = async () => {
     ]);
     console.log("Sample projects created.");
   }
+
+  const defaultContent = [
+    {
+      key: "home.hero.badge",
+      page: "Home",
+      label: "Hero - Badge text",
+      value: "Embedded Systems • Automation • Student Innovation",
+    },
+    {
+      key: "home.hero.title",
+      page: "Home",
+      label: "Hero - Headline",
+      value: "We engineer the dedicated systems inside tomorrow's devices.",
+    },
+    {
+      key: "home.hero.subtitle",
+      page: "Home",
+      label: "Hero - Subtext",
+      value:
+        "SriTech Embedded Projects designs embedded hardware and software, builds industrial automation, and trains students from Diploma to M.Tech to take real projects from idea to working prototype.",
+    },
+    {
+      key: "home.hero.cta_primary",
+      page: "Home",
+      label: "Hero - Primary button text",
+      value: "Explore Projects",
+    },
+    {
+      key: "home.hero.cta_secondary",
+      page: "Home",
+      label: "Hero - Secondary button text",
+      value: "View Courses",
+    },
+    {
+      key: "about.mission",
+      page: "About",
+      label: "Our Mission text",
+      value:
+        "To bridge the gap between theoretical learning and industrial applications through practical and innovative solutions - for students, and for the industries we partner with.",
+    },
+    {
+      key: "about.vision",
+      page: "About",
+      label: "Our Vision text",
+      value:
+        "To be the trusted partner for embedded innovation in the region - where students build skills that transfer directly into industry, and where companies find dependable hardware and automation partners.",
+    },
+  ];
+
+  for (const item of defaultContent) {
+    await Content.findOneAndUpdate({ key: item.key }, item, {
+      upsert: true,
+      setDefaultsOnInsert: true,
+    });
+  }
+  console.log("Default site content seeded.");
 
   console.log("Seeding complete.");
   process.exit(0);

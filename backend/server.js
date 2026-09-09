@@ -15,6 +15,7 @@ const contactRoutes = require("./routes/contactRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
 const enrollmentRoutes = require("./routes/enrollmentRoutes");
+const contentRoutes = require("./routes/contentRoutes");
 const Admin = require("./models/Admin");
 const Course = require("./models/Course");
 const Project = require("./models/Project");
@@ -140,6 +141,7 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/enrollments", enrollmentRoutes);
+app.use("/api/content", contentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

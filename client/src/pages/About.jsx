@@ -1,4 +1,5 @@
 import { HiOutlineCheckCircle } from "react-icons/hi";
+import { useContent } from "../hooks/useContent.js";
 
 const timeline = [
   { year: "2016", text: "Sritech Solutions founded to bridge classroom learning and real embedded hardware." },
@@ -19,6 +20,8 @@ const expertise = [
 const industries = ["Electronics", "IoT", "Robotics", "Biomedical", "Automation", "AI"];
 
 const About = () => {
+  const { content } = useContent();
+
   return (
     <div>
       <section className="bg-navy-950 py-16 text-white sm:py-20">
@@ -38,14 +41,13 @@ const About = () => {
         <div>
           <h2 className="text-2xl font-semibold text-navy-900">Our Mission</h2>
           <p className="mt-3 text-steel">
-            To bridge the gap between theoretical learning and industrial applications through
-            practical and innovative solutions — for students, and for the industries we partner with.
+            {content["about.mission"] ||
+              "To bridge the gap between theoretical learning and industrial applications through practical and innovative solutions — for students, and for the industries we partner with."}
           </p>
           <h2 className="mt-8 text-2xl font-semibold text-navy-900">Our Vision</h2>
           <p className="mt-3 text-steel">
-            To be the trusted partner for embedded innovation in the region — where students build
-            skills that transfer directly into industry, and where companies find dependable hardware
-            and automation partners.
+            {content["about.vision"] ||
+              "To be the trusted partner for embedded innovation in the region — where students build skills that transfer directly into industry, and where companies find dependable hardware and automation partners."}
           </p>
         </div>
 

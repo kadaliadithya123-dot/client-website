@@ -11,6 +11,7 @@ import {
 import api from "../services/api.js";
 import { SkeletonGrid } from "../components/Loader.jsx";
 import CountUp from "../components/CountUp.jsx";
+import { useContent } from "../hooks/useContent.js";
 
 const services = [
   { icon: HiOutlineChip, title: "Embedded System Design", desc: "End-to-end design and development of dedicated embedded computing systems." },
@@ -51,6 +52,7 @@ const Home = () => {
   const [gallery, setGallery] = useState([]);
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { content } = useContent();
 
   useEffect(() => {
     Promise.all([
@@ -98,22 +100,21 @@ const Home = () => {
         <div className="container-page relative grid gap-12 py-24 lg:grid-cols-2 lg:py-32">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="eyebrow inline-block max-w-full rounded-full bg-brand-500/10 px-3 py-1 text-xs leading-relaxed text-brand-400 sm:text-sm">
-              Embedded Systems • Automation • Student Innovation
+              {content["home.hero.badge"] || "Embedded Systems • Automation • Student Innovation"}
             </span>
             <h1 className="mt-6 font-display text-4xl font-semibold leading-tight sm:text-5xl">
-              We engineer the dedicated systems inside tomorrow's devices.
+              {content["home.hero.title"] || "We engineer the dedicated systems inside tomorrow's devices."}
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-mist/70">
-              SriTech Embedded Projects designs embedded hardware and software, builds industrial
-              automation, and trains students from Diploma to M.Tech to take real projects from idea
-              to working prototype.
+              {content["home.hero.subtitle"] ||
+                "SriTech Embedded Projects designs embedded hardware and software, builds industrial automation, and trains students from Diploma to M.Tech to take real projects from idea to working prototype."}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link to="/projects" className="btn-primary">
-                Explore Projects <HiOutlineArrowRight />
+                {content["home.hero.cta_primary"] || "Explore Projects"} <HiOutlineArrowRight />
               </Link>
               <Link to="/courses" className="btn-outline">
-                View Courses
+                {content["home.hero.cta_secondary"] || "View Courses"}
               </Link>
             </div>
           </motion.div>
