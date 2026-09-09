@@ -83,6 +83,16 @@ const Footer = () => {
 
       <div className="border-t border-white/10 py-5 text-center text-xs text-mist/50">
         © {year} {settings?.companyName || "Sritech Solutions"}. All rights reserved.
+        <span className="mx-2 text-white/20">|</span>
+        Designed by{" "}
+        <a
+          href="https://nextgendevs.kadaliadithya123.workers.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand-400 transition-colors hover:text-brand-300"
+        >
+          NextGenDevs
+        </a>
       </div>
     </footer>
   );
