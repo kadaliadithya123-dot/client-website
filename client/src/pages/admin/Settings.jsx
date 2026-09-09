@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import api from "../../services/api.js";
@@ -8,6 +8,7 @@ const Settings = () => {
   const { admin } = useAuth();
   const [settings, setSettings] = useState(null);
   const [saving, setSaving] = useState(false);
+  const savedOnceRef = useRef(false);
   const [pw, setPw] = useState({ currentPassword: "", newPassword: "" });
   const [visiblePasswords, setVisiblePasswords] = useState({ current: false, next: false });
   const [pwSaving, setPwSaving] = useState(false);
@@ -15,7 +16,9 @@ const Settings = () => {
   useEffect(() => {
     api
       .get("/settings")
-      .then((res) => setSettings(res.data.data))
+      .then((res) => {
+        if (!savedOnceRef.current) setSettings(res.data.data);
+      })
       .catch(() => {});
   }, []);
 
@@ -28,6 +31,7 @@ const Settings = () => {
     setSaving(true);
     try {
       const res = await api.put("/settings", settings);
+      savedOnceRef.current = true;
       setSettings(res.data.data);
       toast.success("Settings updated");
     } catch (err) {
