@@ -11,7 +11,7 @@ const Settings = require("../models/Settings");
 const run = async () => {
   await connectDB();
 
-  const email = (process.env.ADMIN_EMAIL || "admin@sritechembedded.com").toLowerCase();
+  const email = (process.env.ADMIN_EMAIL || "admin@sritechsolutions.com").toLowerCase();
   const existing = await Admin.findOne({ email });
   if (!existing) {
     await Admin.create({

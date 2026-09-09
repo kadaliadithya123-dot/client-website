@@ -21,7 +21,7 @@ const Project = require("./models/Project");
 const Settings = require("./models/Settings");
 
 const seedDefaultData = async () => {
-  const email = (process.env.ADMIN_EMAIL || "admin@sritechembedded.com").toLowerCase();
+  const email = (process.env.ADMIN_EMAIL || "admin@sritechsolutions.com").toLowerCase();
 
   const existingAdmin = await Admin.findOne({ email });
   if (!existingAdmin) {
