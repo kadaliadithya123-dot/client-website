@@ -97,7 +97,7 @@ const Home = () => {
 
         <div className="container-page relative grid gap-12 py-24 lg:grid-cols-2 lg:py-32">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="eyebrow rounded-full bg-brand-500/10 px-3 py-1 text-brand-400">
+            <span className="eyebrow inline-block max-w-full rounded-full bg-brand-500/10 px-3 py-1 text-xs leading-relaxed text-brand-400 sm:text-sm">
               Embedded Systems • Automation • Student Innovation
             </span>
             <h1 className="mt-6 font-display text-4xl font-semibold leading-tight sm:text-5xl">
