@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Sritech Solutions logo</title>
+  <desc id="desc">Neon blue embedded chip with circuit traces on a dark background</desc>
+  <defs>
+    <radialGradient id="background" cx="50%" cy="45%" r="70%">
+      <stop offset="0" stop-color="#102b55" />
+      <stop offset="1" stop-color="#030b1d" />
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="44" fill="url(#background)" />
+  <g fill="none" stroke="#16d9ff" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <g stroke-width="8">
+      <path d="M256 114V42M211 119V61l-25-25M301 119V61l25-25M166 147l-43-43M346 147l43-43M143 197H72l-27-27M369 197h71l27-27M143 256H53M369 256h90M143 315H72l-27 27M369 315h71l27 27M166 365l-43 43M346 365l43 43M211 393v58l-25 25M301 393v58l25 25" />
+      <circle cx="256" cy="34" r="13" /><circle cx="186" cy="31" r="13" /><circle cx="326" cy="31" r="13" />
+      <circle cx="113" cy="96" r="13" /><circle cx="399" cy="96" r="13" /><circle cx="38" cy="161" r="13" /><circle cx="474" cy="161" r="13" />
+      <circle cx="38" cy="351" r="13" /><circle cx="474" cy="351" r="13" /><circle cx="113" cy="416" r="13" /><circle cx="399" cy="416" r="13" />
+      <circle cx="186" cy="481" r="13" /><circle cx="326" cy="481" r="13" />
+    </g>
+    <rect x="142" y="142" width="228" height="228" rx="34" stroke-width="9" />
+    <rect x="202" y="202" width="108" height="108" rx="14" stroke-width="8" />
+    <path stroke-width="7" d="M222 190v-18M244 190v-18M266 190v-18M288 190v-18M222 340v-18M244 340v-18M266 340v-18M288 340v-18M190 222h-18M190 244h-18M190 266h-18M190 288h-18M340 222h-18M340 244h-18M340 266h-18M340 288h-18" />
+    <path stroke-width="11" d="M185 215c55-57 137-43 151 12 9 35-15 70-57 77 29-13 43-36 31-59-13-25-57-34-125-30ZM327 297c-55 57-137 43-151-12-9-35 15-70 57-77-29 13-43 36-31 59 13 25 57 34 125 30Z" />
+  </g>
+</svg>

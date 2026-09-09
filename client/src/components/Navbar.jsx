@@ -34,9 +34,7 @@ const Navbar = () => {
     >
       <nav className="container-page flex h-16 items-center justify-between">
         <Link to="/admin/login" className="flex items-center gap-2 text-white">
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-brand-500 font-display text-base font-bold">
-            ST
-          </span>
+          <img src="/sritech-logo.svg" alt="Sritech Solutions logo" className="h-9 w-9 rounded-md object-cover" />
           <span className="font-display text-lg font-semibold tracking-tight">
             Sritech <span className="text-brand-400">Solutions</span>
           </span>
