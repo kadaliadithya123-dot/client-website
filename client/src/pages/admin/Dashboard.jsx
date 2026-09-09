@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { HiOutlineAcademicCap, HiOutlineCube, HiOutlinePhotograph, HiOutlineMail } from "react-icons/hi";
+import {
+  HiOutlineAcademicCap,
+  HiOutlineCube,
+  HiOutlinePhotograph,
+  HiOutlineMail,
+  HiOutlineClipboardList,
+} from "react-icons/hi";
 import api from "../../services/api.js";
 
 const StatCard = ({ icon: Icon, label, value }) => (
@@ -32,6 +38,7 @@ const Dashboard = () => {
         <StatCard icon={HiOutlineCube} label="Total Projects" value={stats?.totalProjects ?? "-"} />
         <StatCard icon={HiOutlinePhotograph} label="Gallery Images" value={stats?.totalGalleryImages ?? "-"} />
         <StatCard icon={HiOutlineMail} label="Contact Messages" value={stats?.totalMessages ?? "-"} />
+        <StatCard icon={HiOutlineClipboardList} label="Total Enrollments" value={stats?.totalEnrollments ?? "-"} />
       </div>
 
       {stats?.unreadMessages > 0 && (
