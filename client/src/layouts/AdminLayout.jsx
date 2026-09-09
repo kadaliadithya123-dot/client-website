@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   HiOutlineViewGrid,
   HiOutlineAcademicCap,
@@ -23,6 +23,7 @@ const navItems = [
 
 const AdminLayout = () => {
   const { admin, logout } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -34,7 +35,7 @@ const AdminLayout = () => {
     <div className="flex min-h-screen bg-mist">
       <aside className="hidden w-64 flex-col bg-navy-950 text-mist/80 md:flex">
         <div className="flex h-16 items-center px-6 font-display text-lg font-semibold text-white">
-          SriTech <span className="ml-1 text-brand-400">Admin</span>
+          Sritech <span className="ml-1 text-brand-400">Admin</span>
         </div>
         <nav className="flex-1 space-y-1 px-3 py-4">
           {navItems.map(({ to, label, icon: Icon, end }) => (
@@ -43,7 +44,7 @@ const AdminLayout = () => {
               to={to}
               end={end}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                `admin-nav-link flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive ? "bg-brand-500/15 text-brand-400" : "hover:bg-white/5 hover:text-white"
                 }`
               }
@@ -66,12 +67,12 @@ const AdminLayout = () => {
 
       <div className="flex-1">
         <header className="flex h-16 items-center justify-between border-b border-black/5 bg-white px-6">
-          <span className="font-display text-base font-semibold text-navy-900 md:hidden">SriTech Admin</span>
+          <span className="font-display text-base font-semibold text-navy-900 md:hidden">Sritech Admin</span>
           <div className="ml-auto text-sm text-steel">
             Signed in as <span className="font-medium text-navy-900">{admin?.name}</span>
           </div>
         </header>
-        <main className="p-6">
+        <main key={location.pathname} className="admin-page-enter p-6">
           <Outlet />
         </main>
       </div>

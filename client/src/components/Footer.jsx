@@ -22,11 +22,11 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="bg-navy-950 text-mist/70">
+    <footer className="snap-section bg-navy-950 text-mist/70">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <span className="font-display text-lg font-semibold text-white">
-            {settings?.companyName || "SriTech Embedded Projects"}
+            {settings?.companyName || "Sritech Solutions"}
           </span>
           <p className="mt-3 text-sm leading-relaxed">
             {settings?.about ||
@@ -74,15 +74,15 @@ const Footer = () => {
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-wide text-white">Contact</h4>
           <ul className="mt-4 space-y-2 text-sm">
-            <li>{settings?.address || "Andhra Pradesh, India"}</li>
-            <li>{settings?.phone || "+91 90000 00000"}</li>
-            <li>{settings?.email || "info@sritechembedded.com"}</li>
+            <li>{settings?.address || "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}</li>
+            <li>{settings?.phone || "99488-32456 / 86886-32456"}</li>
+            <li>{settings?.email || "sritechsolutions9@gmail.com"}</li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-white/10 py-5 text-center text-xs text-mist/50">
-        © {year} {settings?.companyName || "SriTech Embedded Projects"}. All rights reserved.
+        © {year} {settings?.companyName || "Sritech Solutions"}. All rights reserved.
       </div>
     </footer>
   );

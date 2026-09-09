@@ -53,11 +53,48 @@
   }
 }
 
+html.snap-scroll {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  scroll-margin-top: 4rem; /* offset for the sticky navbar (h-16) so content doesn't land underneath it */
+}
+
+.admin-page-enter {
+  animation: admin-page-enter 420ms ease-out both;
+}
+
+.admin-nav-link {
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.admin-nav-link:hover {
+  transform: translateX(3px);
+}
+
+@keyframes admin-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .admin-page-enter {
+    animation: none;
   }
 }

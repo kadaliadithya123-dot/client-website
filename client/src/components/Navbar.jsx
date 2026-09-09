@@ -38,7 +38,7 @@ const Navbar = () => {
             ST
           </span>
           <span className="font-display text-lg font-semibold tracking-tight">
-            SriTech <span className="text-brand-400">Embedded</span>
+            Sritech <span className="text-brand-400">Solutions</span>
           </span>
         </Link>
 

@@ -23,7 +23,8 @@ export default {
           800: "#0f3d87",
           900: "#11346f",
         },
-        mist: "#f4f6fa",
+        mist: "#e8edf5",
+        cloud: "#eef2f9",
         steel: "#8b96a8",
       },
       fontFamily: {
@@ -31,7 +32,7 @@ export default {
         body: ["'Inter'", "sans-serif"],
       },
       backgroundImage: {
-        "circuit": "radial-gradient(circle at 1px 1px, rgba(31,119,245,0.15) 1px, transparent 0)",
+        circuit: "radial-gradient(circle at 1px 1px, rgba(31,119,245,0.15) 1px, transparent 0)",
       },
     },
   },

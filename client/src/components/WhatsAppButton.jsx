@@ -3,7 +3,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import api from "../services/api.js";
 
 const WhatsAppButton = () => {
-  const [phone, setPhone] = useState("919000000000");
+  const [phone, setPhone] = useState("919948832456");
 
   useEffect(() => {
     api

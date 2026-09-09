@@ -1,7 +1,7 @@
 import { HiOutlineCheckCircle } from "react-icons/hi";
 
 const timeline = [
-  { year: "2016", text: "SriTech founded to bridge classroom learning and real embedded hardware." },
+  { year: "2016", text: "Sritech Solutions founded to bridge classroom learning and real embedded hardware." },
   { year: "2019", text: "Expanded into industrial automation projects for regional manufacturers." },
   { year: "2022", text: "Crossed 500 students trained across ECE, EEE, CSE and Biomedical streams." },
   { year: "2025", text: "Launched dedicated IoT and AI-on-edge training tracks." },
@@ -23,7 +23,7 @@ const About = () => {
     <div>
       <section className="bg-navy-950 py-16 text-white sm:py-20">
         <div className="container-page">
-          <span className="eyebrow text-brand-400">About SriTech</span>
+          <span className="eyebrow text-brand-400">About Sritech Solutions</span>
           <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold sm:text-4xl">
             Engineering education that ends with a working prototype.
           </h1>

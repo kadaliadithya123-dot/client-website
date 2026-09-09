@@ -27,14 +27,16 @@ const run = async () => {
   const settingsCount = await Settings.countDocuments();
   if (settingsCount === 0) {
     await Settings.create({
-      companyName: "SriTech Embedded Projects",
+      companyName: "Sritech Solutions",
       tagline: "Bridging Theory and Industrial Innovation",
       about:
-        "SriTech Embedded Projects focuses on Embedded Systems - specialized computing systems designed to perform dedicated functions within larger devices.",
-      address: "Andhra Pradesh, India",
-      phone: "+91 90000 00000",
-      email: "info@sritechembedded.com",
-      whatsapp: "+91 90000 00000",
+        "Sritech Solutions focuses on Embedded Systems - specialized computing systems designed to perform dedicated functions within larger devices.",
+      address: "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016",
+      phone: "99488-32456 / 86886-32456",
+      email: "sritechsolutions9@gmail.com",
+      whatsapp: "+91 99488-32456",
+      social: { instagram: "https://instagram.com/sritech_projects" },
+      stats: { studentsTrained: 500, projectsDelivered: 120, industryPartners: 15, branchesSupported: 8 },
     });
     console.log("Default settings created.");
   }

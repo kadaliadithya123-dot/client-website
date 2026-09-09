@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import api from "../../services/api.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 
@@ -8,6 +9,7 @@ const Settings = () => {
   const [settings, setSettings] = useState(null);
   const [saving, setSaving] = useState(false);
   const [pw, setPw] = useState({ currentPassword: "", newPassword: "" });
+  const [visiblePasswords, setVisiblePasswords] = useState({ current: false, next: false });
   const [pwSaving, setPwSaving] = useState(false);
 
   useEffect(() => {
@@ -48,6 +50,9 @@ const Settings = () => {
       setPwSaving(false);
     }
   };
+
+  const togglePassword = (field) =>
+    setVisiblePasswords((visible) => ({ ...visible, [field]: !visible[field] }));
 
   if (!settings) return <p className="text-sm text-steel">Loading...</p>;
 
@@ -128,23 +133,27 @@ const Settings = () => {
 
       <form onSubmit={handlePasswordChange} className="space-y-4 rounded-lg border border-black/5 bg-white p-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-steel">Change Password</h2>
-        <input
-          type="password"
-          required
-          value={pw.currentPassword}
-          onChange={(e) => setPw({ ...pw, currentPassword: e.target.value })}
-          placeholder="Current Password"
-          className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-        />
-        <input
-          type="password"
-          required
-          minLength={6}
-          value={pw.newPassword}
-          onChange={(e) => setPw({ ...pw, newPassword: e.target.value })}
-          placeholder="New Password"
-          className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-        />
+        {[{ key: "current", field: "currentPassword", label: "Current Password", minLength: undefined }, { key: "next", field: "newPassword", label: "New Password", minLength: 6 }].map(({ key, field, label, minLength }) => (
+          <div key={field} className="relative">
+            <input
+              type={visiblePasswords[key] ? "text" : "password"}
+              required
+              minLength={minLength}
+              value={pw[field]}
+              onChange={(e) => setPw({ ...pw, [field]: e.target.value })}
+              placeholder={label}
+              className="w-full rounded-md border border-black/10 px-3 py-2 pr-10 text-sm outline-none focus:border-brand-400"
+            />
+            <button
+              type="button"
+              onClick={() => togglePassword(key)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-steel transition-colors hover:text-navy-900"
+              aria-label={visiblePasswords[key] ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
+            >
+              {visiblePasswords[key] ? <HiEyeOff size={18} /> : <HiEye size={18} />}
+            </button>
+          </div>
+        ))}
         <button type="submit" disabled={pwSaving} className="btn-primary disabled:opacity-60">
           {pwSaving ? "Updating..." : "Update Password"}
         </button>

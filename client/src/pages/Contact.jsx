@@ -45,24 +45,24 @@ const Contact = () => {
           <div className="mt-5 space-y-4 text-sm text-steel">
             <p className="flex items-start gap-3">
               <HiOutlineLocationMarker className="mt-0.5 shrink-0 text-brand-500" size={20} />
-              {settings?.address || "Andhra Pradesh, India"}
+              {settings?.address || "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}
             </p>
             <p className="flex items-center gap-3">
               <HiOutlinePhone className="text-brand-500" size={20} />
-              {settings?.phone || "+91 90000 00000"}
+              {settings?.phone || "99488-32456 / 86886-32456"}
             </p>
             <p className="flex items-center gap-3">
               <HiOutlineMail className="text-brand-500" size={20} />
-              {settings?.email || "info@sritechembedded.com"}
+              {settings?.email || "sritechsolutions9@gmail.com"}
             </p>
           </div>
 
           <div className="mt-8 aspect-video overflow-hidden rounded-lg border border-black/5">
             <iframe
-              title="SriTech Embedded Projects location"
+              title="Sritech Solutions location"
               src={
                 settings?.mapEmbedUrl ||
-                `https://www.google.com/maps?q=${encodeURIComponent(settings?.address || "Andhra Pradesh, India")}&output=embed`
+                `https://www.google.com/maps?q=${encodeURIComponent(settings?.address || "Sritech Solutions, Ratnaveni Complex, 1st Lane, Dwarakanagar, Visakhapatnam - 530016")}&output=embed`
               }
               width="100%"
               height="100%"
