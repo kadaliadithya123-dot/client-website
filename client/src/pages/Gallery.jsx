@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { HiX, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import api from "../services/api.js";
+import { useContent } from "../hooks/useContent.js";
 
 const categories = ["", "Events", "Workshops", "Projects", "Labs", "Students"];
 
 const Gallery = () => {
+  const { content } = useContent();
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
@@ -69,8 +71,10 @@ const Gallery = () => {
     <div>
       <section className="bg-navy-950 py-14 text-white">
         <div className="container-page">
-          <span className="eyebrow text-brand-400">Gallery</span>
-          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">Events, workshops and life in the lab</h1>
+          <span className="eyebrow text-brand-400">{content["gallery.header_eyebrow"] || "Gallery"}</span>
+          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">
+            {content["gallery.header_title"] || "Events, workshops and life in the lab"}
+          </h1>
         </div>
       </section>
 

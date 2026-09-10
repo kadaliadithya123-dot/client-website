@@ -162,6 +162,42 @@ const run = async () => {
       value:
         "To be the trusted partner for embedded innovation in the region - where students build skills that transfer directly into industry, and where companies find dependable hardware and automation partners.",
     },
+    {
+      key: "about.students_support",
+      page: "About",
+      label: "Students We Support - text",
+      value:
+        "Diploma, B.Tech and M.Tech students across Electronics, Telecommunications, Instrumentation, Biomedical and Computer Science.",
+    },
+    {
+      key: "about.industries",
+      page: "About",
+      label: "Industries Served - tag list (JSON array of strings)",
+      value: JSON.stringify(["Electronics", "IoT", "Robotics", "Biomedical", "Automation", "AI"]),
+    },
+    {
+      key: "about.timeline",
+      page: "About",
+      label: "Our Journey - timeline (JSON array of {year, text})",
+      value: JSON.stringify([
+        { year: "2016", text: "SriTech founded to bridge classroom learning and real embedded hardware." },
+        { year: "2019", text: "Expanded into industrial automation projects for regional manufacturers." },
+        { year: "2022", text: "Crossed 500 students trained across ECE, EEE, CSE and Biomedical streams." },
+        { year: "2025", text: "Launched dedicated IoT and AI-on-edge training tracks." },
+      ]),
+    },
+    {
+      key: "gallery.header_eyebrow",
+      page: "Gallery",
+      label: "Header - small label above title",
+      value: "Gallery",
+    },
+    {
+      key: "gallery.header_title",
+      page: "Gallery",
+      label: "Header - main title",
+      value: "Events, workshops and life in the lab",
+    },
   ];
 
   for (const item of defaultContent) {
