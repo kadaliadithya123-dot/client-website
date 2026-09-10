@@ -4,26 +4,21 @@ import { HiOutlineSearch, HiOutlineUsers } from "react-icons/hi";
 import api from "../services/api.js";
 import { SkeletonGrid } from "../components/Loader.jsx";
 
-const domains = [
-  "",
-  "8051 BASED PROJECTS",
-  "PIC MICROCONTROLLER BASED PROJECTS",
-  "ARDUINO BASED PROJECTS",
-  "ESP32 BASED PROJECTS",
-  "STM32 BASED PROJECTS",
-  "RASPBEERY PI PICO BASED PROJECTS",
-  "HARDWARE AND NETWORKING BASED PROJECTS",
-  "LI-FI BASED PROJECTS",
-  "ROBOTICS",
-];
-
 const Projects = () => {
   const [projects, setProjects] = useState([]);
+  const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [domain, setDomain] = useState("");
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
+
+  useEffect(() => {
+    api
+      .get("/domains")
+      .then((res) => setDomains(res.data.data))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -73,9 +68,10 @@ const Projects = () => {
               }}
               className="w-full appearance-none rounded-md border border-black/10 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-navy-900 outline-none focus:border-brand-400"
             >
+              <option value="">All Domains</option>
               {domains.map((d) => (
-                <option key={d || "all"} value={d}>
-                  {d || "All Domains"}
+                <option key={d._id} value={d.name}>
+                  {d.name}
                 </option>
               ))}
             </select>

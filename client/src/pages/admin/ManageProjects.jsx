@@ -1,24 +1,12 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlus, HiX, HiOutlineDocumentText } from "react-icons/hi";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlus, HiX, HiOutlineDocumentText, HiOutlineCog } from "react-icons/hi";
 import api from "../../services/api.js";
-
-const domains = [
-  "8051 BASED PROJECTS",
-  "PIC MICROCONTROLLER BASED PROJECTS",
-  "ARDUINO BASED PROJECTS",
-  "ESP32 BASED PROJECTS",
-  "STM32 BASED PROJECTS",
-  "RASPBEERY PI PICO BASED PROJECTS",
-  "HARDWARE AND NETWORKING BASED PROJECTS",
-  "LI-FI BASED PROJECTS",
-  "ROBOTICS",
-];
 
 const emptyForm = {
   title: "",
   description: "",
-  domain: "8051 BASED PROJECTS",
+  domain: "",
   technologies: "",
   videoLink: "",
   difficulty: "Intermediate",
@@ -29,6 +17,10 @@ const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [domains, setDomains] = useState([]);
+  const [domainPanelOpen, setDomainPanelOpen] = useState(false);
+  const [newDomain, setNewDomain] = useState("");
+  const [addingDomain, setAddingDomain] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyForm);
@@ -54,6 +46,42 @@ const ManageProjects = () => {
 
   useEffect(fetchProjects, [search]);
 
+  const fetchDomains = () => {
+    api
+      .get("/domains")
+      .then((res) => setDomains(res.data.data))
+      .catch(() => {});
+  };
+
+  useEffect(fetchDomains, []);
+
+  const handleAddDomain = async (e) => {
+    e.preventDefault();
+    if (!newDomain.trim()) return;
+    setAddingDomain(true);
+    try {
+      await api.post("/domains", { name: newDomain.trim() });
+      toast.success("Domain added");
+      setNewDomain("");
+      fetchDomains();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to add domain");
+    } finally {
+      setAddingDomain(false);
+    }
+  };
+
+  const handleDeleteDomain = async (domain) => {
+    if (!window.confirm(`Delete domain "${domain.name}"?`)) return;
+    try {
+      await api.delete(`/domains/${domain._id}`);
+      toast.success("Domain deleted");
+      fetchDomains();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to delete domain");
+    }
+  };
+
   const resetFileState = () => {
     setThumbnail(null);
     setImages(null);
@@ -68,7 +96,7 @@ const ManageProjects = () => {
 
   const openCreate = () => {
     setEditing(null);
-    setForm(emptyForm);
+    setForm({ ...emptyForm, domain: domains[0]?.name || "" });
     resetFileState();
     setModalOpen(true);
   };
@@ -78,7 +106,7 @@ const ManageProjects = () => {
     setForm({
       title: p.title,
       description: p.description,
-      domain: domains.includes(p.domain) ? p.domain : domains[0],
+      domain: domains.some((domain) => domain.name === p.domain) ? p.domain : domains[0]?.name || "",
       technologies: (p.technologies || []).join(", "),
       videoLink: p.videoLink || "",
       difficulty: p.difficulty,
@@ -149,9 +177,14 @@ const ManageProjects = () => {
           <h1 className="text-2xl font-semibold text-navy-900">Manage Projects</h1>
           <p className="mt-1 text-sm text-steel">Create, edit and remove student/industry projects.</p>
         </div>
-        <button onClick={openCreate} className="btn-primary">
-          <HiOutlinePlus /> New Project
-        </button>
+        <div className="flex gap-2">
+          <button onClick={() => setDomainPanelOpen(true)} className="btn-outline !border-black/10 !text-navy-900 hover:!bg-mist">
+            <HiOutlineCog /> Manage Domains
+          </button>
+          <button onClick={openCreate} className="btn-primary">
+            <HiOutlinePlus /> New Project
+          </button>
+        </div>
       </div>
 
       <input
@@ -214,7 +247,7 @@ const ManageProjects = () => {
               <textarea required rows={3} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400" />
               <div className="grid grid-cols-2 gap-3">
                 <select value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })} className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400">
-                  {domains.map((domain) => <option key={domain}>{domain}</option>)}
+                  {domains.map((domain) => <option key={domain._id} value={domain.name}>{domain.name}</option>)}
                 </select>
                 <select value={form.difficulty} onChange={(e) => setForm({ ...form, difficulty: e.target.value })} className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400">
                   <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
@@ -273,6 +306,49 @@ const ManageProjects = () => {
 
               <button type="submit" disabled={saving} className="btn-primary w-full disabled:opacity-60">{saving ? "Saving..." : editing ? "Update Project" : "Create Project"}</button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {domainPanelOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-lg bg-white p-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-navy-900">Manage Domains</h2>
+              <button onClick={() => setDomainPanelOpen(false)} className="text-steel hover:text-navy-900">
+                <HiX size={22} />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddDomain} className="mt-4 flex gap-2">
+              <input
+                placeholder="New domain, e.g. NODE MCU BASED PROJECTS"
+                value={newDomain}
+                onChange={(e) => setNewDomain(e.target.value)}
+                className="flex-1 rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+              />
+              <button type="submit" disabled={addingDomain} className="btn-primary !px-4 disabled:opacity-60">
+                {addingDomain ? "Adding..." : "Add"}
+              </button>
+            </form>
+
+            <div className="mt-4 max-h-64 space-y-1 overflow-y-auto">
+              {domains.length === 0 ? (
+                <p className="text-sm text-steel">No domains yet - add one above.</p>
+              ) : (
+                domains.map((domain) => (
+                  <div key={domain._id} className="flex items-center justify-between rounded-md px-3 py-2 text-sm hover:bg-mist">
+                    <span className="text-navy-900">{domain.name}</span>
+                    <button onClick={() => handleDeleteDomain(domain)} className="rounded-md p-1.5 text-red-500 hover:bg-red-50" title="Delete domain">
+                      <HiOutlineTrash size={15} />
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+            <p className="mt-3 text-xs text-steel">
+              A domain cannot be deleted while any project is still using it. Reassign those projects first.
+            </p>
           </div>
         </div>
       )}

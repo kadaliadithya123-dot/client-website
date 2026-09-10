@@ -8,6 +8,19 @@ const Course = require("../models/Course");
 const Project = require("../models/Project");
 const Settings = require("../models/Settings");
 const Content = require("../models/Content");
+const Domain = require("../models/Domain");
+
+const defaultDomains = [
+  "8051 BASED PROJECTS",
+  "PIC MICROCONTROLLER BASED PROJECTS",
+  "ARDUINO BASED PROJECTS",
+  "ESP32 BASED PROJECTS",
+  "STM32 BASED PROJECTS",
+  "RASPBEERY PI PICO BASED PROJECTS",
+  "HARDWARE AND NETWORKING BASED PROJECTS",
+  "LI-FI BASED PROJECTS",
+  "ROBOTICS",
+];
 
 const run = async () => {
   await connectDB();
@@ -24,6 +37,11 @@ const run = async () => {
   } else {
     console.log("Admin already exists, skipping.");
   }
+
+  for (const name of defaultDomains) {
+    await Domain.findOneAndUpdate({ name }, { name }, { upsert: true, setDefaultsOnInsert: true });
+  }
+  console.log("Default domains seeded.");
 
   const settingsCount = await Settings.countDocuments();
   if (settingsCount === 0) {
