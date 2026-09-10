@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlus, HiX, HiOutlineDocumentText, HiOutlineCog } from "react-icons/hi";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlus, HiX, HiCheck, HiOutlineDocumentText, HiOutlineCog } from "react-icons/hi";
 import api from "../../services/api.js";
 
 const emptyForm = {
@@ -21,6 +21,8 @@ const ManageProjects = () => {
   const [domainPanelOpen, setDomainPanelOpen] = useState(false);
   const [newDomain, setNewDomain] = useState("");
   const [addingDomain, setAddingDomain] = useState(false);
+  const [renamingDomainId, setRenamingDomainId] = useState(null);
+  const [renameDomainValue, setRenameDomainValue] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyForm);
@@ -79,6 +81,24 @@ const ManageProjects = () => {
       fetchDomains();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to delete domain");
+    }
+  };
+
+  const startRenameDomain = (domain) => {
+    setRenamingDomainId(domain._id);
+    setRenameDomainValue(domain.name);
+  };
+
+  const saveRenameDomain = async (domain) => {
+    if (!renameDomainValue.trim()) return;
+    try {
+      await api.put(`/domains/${domain._id}`, { name: renameDomainValue.trim() });
+      toast.success("Domain renamed");
+      setRenamingDomainId(null);
+      fetchDomains();
+      fetchProjects();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to rename domain");
     }
   };
 
@@ -338,10 +358,15 @@ const ManageProjects = () => {
               ) : (
                 domains.map((domain) => (
                   <div key={domain._id} className="flex items-center justify-between rounded-md px-3 py-2 text-sm hover:bg-mist">
-                    <span className="text-navy-900">{domain.name}</span>
-                    <button onClick={() => handleDeleteDomain(domain)} className="rounded-md p-1.5 text-red-500 hover:bg-red-50" title="Delete domain">
-                      <HiOutlineTrash size={15} />
-                    </button>
+                    {renamingDomainId === domain._id ? (
+                      <div className="flex flex-1 items-center gap-2">
+                        <input autoFocus value={renameDomainValue} onChange={(e) => setRenameDomainValue(e.target.value)} className="flex-1 rounded-md border border-black/10 px-2 py-1 text-sm outline-none focus:border-brand-400" />
+                        <button onClick={() => saveRenameDomain(domain)} className="rounded-md p-1.5 text-brand-600 hover:bg-brand-50" title="Save"><HiCheck size={16} /></button>
+                        <button onClick={() => setRenamingDomainId(null)} className="rounded-md p-1.5 text-steel hover:bg-mist" title="Cancel"><HiX size={16} /></button>
+                      </div>
+                    ) : (
+                      <><span className="text-navy-900">{domain.name}</span><div className="flex gap-1"><button onClick={() => startRenameDomain(domain)} className="rounded-md p-1.5 text-brand-600 hover:bg-brand-50" title="Rename"><HiOutlinePencil size={15} /></button><button onClick={() => handleDeleteDomain(domain)} className="rounded-md p-1.5 text-red-500 hover:bg-red-50" title="Delete domain"><HiOutlineTrash size={15} /></button></div></>
+                    )}
                   </div>
                 ))
               )}

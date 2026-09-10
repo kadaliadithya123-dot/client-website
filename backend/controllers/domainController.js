@@ -47,4 +47,34 @@ const deleteDomain = async (req, res, next) => {
   }
 };
 
-module.exports = { getDomains, createDomain, deleteDomain };
+const updateDomain = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    if (!name || !name.trim()) {
+      res.status(400);
+      throw new Error("Domain name is required");
+    }
+    const domain = await Domain.findById(req.params.id);
+    if (!domain) {
+      res.status(404);
+      throw new Error("Domain not found");
+    }
+    const newName = name.trim();
+    if (domain.name !== newName) {
+      const clash = await Domain.findOne({ name: newName });
+      if (clash) {
+        res.status(400);
+        throw new Error("That domain name already exists");
+      }
+      const oldName = domain.name;
+      domain.name = newName;
+      await domain.save();
+      await Project.updateMany({ domain: oldName }, { domain: newName });
+    }
+    res.json({ success: true, data: domain });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getDomains, createDomain, updateDomain, deleteDomain };

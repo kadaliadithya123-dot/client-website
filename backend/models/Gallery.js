@@ -4,11 +4,7 @@ const gallerySchema = new mongoose.Schema(
   {
     title: { type: String, default: "" },
     image: { type: String, required: true },
-    category: {
-      type: String,
-      enum: ["Events", "Workshops", "Projects", "Labs", "Students"],
-      required: true,
-    },
+    category: { type: String, required: true, trim: true },
   },
   { timestamps: true }
 );

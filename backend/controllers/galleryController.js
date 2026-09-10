@@ -48,6 +48,24 @@ const uploadGalleryImages = async (req, res, next) => {
   }
 };
 
+const updateGalleryImage = async (req, res, next) => {
+  try {
+    const { title, category } = req.body;
+    const update = {};
+    if (title !== undefined) update.title = title;
+    if (category !== undefined) update.category = category;
+
+    const img = await Gallery.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
+    if (!img) {
+      res.status(404);
+      throw new Error("Image not found");
+    }
+    res.json({ success: true, data: img });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // @desc  Delete gallery image
 // @route DELETE /api/gallery/:id
 // @access Private
@@ -64,4 +82,4 @@ const deleteGalleryImage = async (req, res, next) => {
   }
 };
 
-module.exports = { getGallery, uploadGalleryImages, deleteGalleryImage };
+module.exports = { getGallery, uploadGalleryImages, updateGalleryImage, deleteGalleryImage };

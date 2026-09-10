@@ -8,7 +8,10 @@ const Course = require("../models/Course");
 const Project = require("../models/Project");
 const Settings = require("../models/Settings");
 const Content = require("../models/Content");
+const GalleryCategory = require("../models/GalleryCategory");
 const Domain = require("../models/Domain");
+
+const defaultGalleryCategories = ["Events", "Workshops", "Projects", "Labs", "Students"];
 
 const defaultDomains = [
   "8051 BASED PROJECTS",
@@ -42,6 +45,11 @@ const run = async () => {
     await Domain.findOneAndUpdate({ name }, { name }, { upsert: true, setDefaultsOnInsert: true });
   }
   console.log("Default domains seeded.");
+
+  for (const name of defaultGalleryCategories) {
+    await GalleryCategory.findOneAndUpdate({ name }, { name }, { upsert: true, setDefaultsOnInsert: true });
+  }
+  console.log("Default gallery categories seeded.");
 
   const settingsCount = await Settings.countDocuments();
   if (settingsCount === 0) {
