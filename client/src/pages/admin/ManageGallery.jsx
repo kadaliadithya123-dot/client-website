@@ -197,9 +197,9 @@ const ManageGallery = () => {
       </div>
 
       {categoryPanelOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-lg bg-white p-6">
-            <div className="flex items-center justify-between"><h2 className="text-lg font-semibold text-navy-900">Manage Categories</h2><button onClick={() => setCategoryPanelOpen(false)} className="text-steel hover:text-navy-900"><HiX size={22} /></button></div>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between"><h2 className="text-lg font-semibold text-navy-900">Manage Categories</h2><button type="button" onClick={() => setCategoryPanelOpen(false)} className="text-steel hover:text-navy-900" aria-label="Close category manager"><HiX size={22} /></button></div>
             <form onSubmit={handleAddCategory} className="mt-4 flex gap-2">
               <input placeholder="New category, e.g. Hackathons" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className="flex-1 rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400" />
               <button type="submit" disabled={addingCategory} className="btn-primary !px-4 disabled:opacity-60">{addingCategory ? "Adding..." : "Add"}</button>
@@ -225,14 +225,14 @@ const ManageGallery = () => {
       )}
 
       {editingImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-sm rounded-lg bg-white p-6">
-            <div className="flex items-center justify-between"><h2 className="text-lg font-semibold text-navy-900">Edit Image</h2><button onClick={() => setEditingImage(null)} className="text-steel hover:text-navy-900"><HiX size={22} /></button></div>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
+          <div className="relative w-full max-w-sm rounded-lg bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between"><h2 className="text-lg font-semibold text-navy-900">Edit Image</h2><button type="button" onClick={() => setEditingImage(null)} className="text-steel hover:text-navy-900" aria-label="Close image editor"><HiX size={22} /></button></div>
             <img src={editingImage.image} alt="" className="mt-3 h-32 w-full rounded-md object-cover" />
             <div className="mt-4 space-y-3">
               <label className="block text-xs font-medium text-steel">Caption<input placeholder="e.g. Robotics workshop, Jan 2026" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400" /></label>
               <label className="block text-xs font-medium text-steel">Category<select value={editCategory} onChange={(e) => setEditCategory(e.target.value)} className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400">{categories.map((cat) => <option key={cat._id} value={cat.name}>{cat.name}</option>)}</select></label>
-              <button onClick={saveImageEdit} disabled={savingEdit} className="btn-primary w-full disabled:opacity-60">{savingEdit ? "Saving..." : "Save"}</button>
+              <button type="button" onClick={saveImageEdit} disabled={savingEdit} className="btn-primary w-full disabled:opacity-60">{savingEdit ? "Saving..." : "Save"}</button>
             </div>
           </div>
         </div>

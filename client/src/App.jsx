@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -25,40 +26,43 @@ import AdminSettings from "./pages/admin/Settings.jsx";
 
 function App() {
   return (
-    <Routes>
-      {/* Public site */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/courses/:slug" element={<CourseDetail />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
+    <>
+      <Routes>
+        {/* Public site */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/:slug" element={<CourseDetail />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
 
-      {/* Admin */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute>
-            <AdminLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Dashboard />} />
-        <Route path="courses" element={<ManageCourses />} />
-        <Route path="projects" element={<ManageProjects />} />
-        <Route path="gallery" element={<ManageGallery />} />
-        <Route path="messages" element={<ManageMessages />} />
-        <Route path="enrollments" element={<ManageEnrollments />} />
-        <Route path="content" element={<SiteContent />} />
-        <Route path="settings" element={<AdminSettings />} />
-      </Route>
-    </Routes>
+        {/* Admin */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="courses" element={<ManageCourses />} />
+          <Route path="projects" element={<ManageProjects />} />
+          <Route path="gallery" element={<ManageGallery />} />
+          <Route path="messages" element={<ManageMessages />} />
+          <Route path="enrollments" element={<ManageEnrollments />} />
+          <Route path="content" element={<SiteContent />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
+      </Routes>
+      <Analytics />
+    </>
   );
 }
 
