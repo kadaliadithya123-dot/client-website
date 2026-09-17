@@ -11,6 +11,7 @@ import {
 import api from "../services/api.js";
 import { SkeletonGrid } from "../components/Loader.jsx";
 import CountUp from "../components/CountUp.jsx";
+import { formatCount } from "../utils/formatCount.js";
 import { useContent } from "../hooks/useContent.js";
 
 const services = [
@@ -51,6 +52,7 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [settings, setSettings] = useState(null);
+  const [visitorCount, setVisitorCount] = useState(null);
   const [loading, setLoading] = useState(true);
   const { content } = useContent();
 
@@ -71,11 +73,17 @@ const Home = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    api
+      .post("/visitors/track")
+      .then((res) => setVisitorCount(res.data.data.count))
+      .catch(() => {});
+  }, []);
+
   const stats = [
     { value: settings?.studentsTrained ?? defaultStats.studentsTrained, suffix: "+", label: settings?.studentsTrainedLabel || "Students Trained" },
     { value: settings?.projectsDelivered ?? defaultStats.projectsDelivered, suffix: "+", label: settings?.projectsDeliveredLabel || "Projects Delivered" },
     { value: settings?.industryPartners ?? defaultStats.industryPartners, suffix: "+", label: settings?.industryPartnersLabel || "Industry Partners" },
-    { value: settings?.branchesSupported ?? defaultStats.branchesSupported, suffix: "", label: settings?.branchesSupportedLabel || "Branches Supported" },
   ];
 
   useEffect(() => {
@@ -154,6 +162,12 @@ const Home = () => {
               <div className="mt-1 text-xs text-mist/50 sm:text-sm">{s.label}</div>
             </div>
           ))}
+          <div className="text-center">
+            <div className="font-display text-2xl font-semibold text-white sm:text-3xl">
+              {visitorCount == null ? "0" : <CountUp value={visitorCount} formatter={formatCount} />}
+            </div>
+            <div className="mt-1 text-xs text-mist/50 sm:text-sm">{settings?.branchesSupportedLabel || "Visitors"}</div>
+          </div>
         </div>
       </motion.section>
 

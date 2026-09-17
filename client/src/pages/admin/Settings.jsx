@@ -107,29 +107,41 @@ const Settings = () => {
             ["projectsDelivered", "projectsDeliveredLabel", "Projects Delivered"],
             ["industryPartners", "industryPartnersLabel", "Industry Partners"],
             ["branchesSupported", "branchesSupportedLabel", "Branches Supported"],
-          ].map(([numberField, labelField, defaultLabel]) => (
-            <div key={numberField} className="contents">
-              <div>
-                <label className="text-xs text-steel">Number</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={settings[numberField] ?? ""}
-                  onChange={(e) => handleChange(numberField, e.target.value)}
-                  className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-                />
+          ].map(([numberField, labelField, defaultLabel]) => {
+            const isAutoTracked = numberField === "branchesSupported";
+
+            return (
+              <div key={numberField} className="contents">
+                <div>
+                  <label className="text-xs text-steel">{isAutoTracked ? "Number (auto-tracked)" : "Number"}</label>
+                  <input
+                    type={isAutoTracked ? "text" : "number"}
+                    min={isAutoTracked ? undefined : "0"}
+                    value={isAutoTracked ? "Counts real page visits automatically" : settings[numberField] ?? ""}
+                    onChange={isAutoTracked ? undefined : (e) => handleChange(numberField, e.target.value)}
+                    disabled={isAutoTracked}
+                    className={`mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none ${
+                      isAutoTracked
+                        ? "cursor-not-allowed bg-mist text-xs italic text-steel"
+                        : "focus:border-brand-400"
+                    }`}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-steel">Label</label>
+                  <input
+                    value={settings[labelField] ?? defaultLabel}
+                    onChange={(e) => handleChange(labelField, e.target.value)}
+                    className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="text-xs text-steel">Label</label>
-                <input
-                  value={settings[labelField] ?? defaultLabel}
-                  onChange={(e) => handleChange(labelField, e.target.value)}
-                  className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+        <p className="-mt-1 text-xs text-steel">
+          The 4th stat's number now tracks real site visits automatically — only its label is editable.
+        </p>
 
         <h2 className="pt-2 text-sm font-semibold uppercase tracking-wide text-steel">Contact Details</h2>
         <input

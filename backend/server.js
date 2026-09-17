@@ -18,6 +18,7 @@ const enrollmentRoutes = require("./routes/enrollmentRoutes");
 const contentRoutes = require("./routes/contentRoutes");
 const domainRoutes = require("./routes/domainRoutes");
 const galleryCategoryRoutes = require("./routes/galleryCategoryRoutes");
+const visitorRoutes = require("./routes/visitorRoutes");
 const Admin = require("./models/Admin");
 const Course = require("./models/Course");
 const Project = require("./models/Project");
@@ -146,6 +147,7 @@ app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/domains", domainRoutes);
 app.use("/api/gallery-categories", galleryCategoryRoutes);
+app.use("/api/visitors", visitorRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
