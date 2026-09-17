@@ -86,11 +86,16 @@ const Gallery = () => {
           ))}
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {images.map((img, i) => (
-            <button key={img._id} onClick={() => setLightboxIndex(i)} className="group relative aspect-square overflow-hidden rounded-lg bg-navy-800">
-              <img src={img.image} alt={img.title || img.category} loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
-              {img.title && <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-left"><p className="line-clamp-2 text-xs text-white">{img.title}</p></div>}
+            <button key={img._id} onClick={() => setLightboxIndex(i)} className="group overflow-hidden rounded-lg border border-black/5 bg-white text-left shadow-sm transition-shadow hover:shadow-lg">
+              <div className="aspect-square overflow-hidden bg-navy-800">
+                <img src={img.image} alt={img.title || img.category} loading="lazy" className="h-full w-full object-contain transition-transform group-hover:scale-105" />
+              </div>
+              <div className="p-3">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-600">{img.category}</span>
+                <p className="mt-1 line-clamp-2 text-sm text-navy-900">{img.title || <span className="text-steel">No description added</span>}</p>
+              </div>
             </button>
           ))}
         </div>

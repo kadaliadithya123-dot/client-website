@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { HiOutlineClock, HiOutlineCurrencyRupee, HiOutlineUser, HiOutlineCheckCircle, HiX } from "react-icons/hi";
+import { HiOutlineClock, HiOutlineCurrencyRupee, HiOutlineUser, HiOutlineCheckCircle, HiX, HiOutlineZoomIn } from "react-icons/hi";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import api from "../services/api.js";
@@ -11,6 +11,7 @@ const CourseDetail = () => {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   const {
     register,
@@ -83,7 +84,17 @@ const CourseDetail = () => {
       <section className="container-page grid gap-10 py-12 lg:grid-cols-3">
         <div className="lg:col-span-2">
           {course.image && (
-            <img src={course.image} alt={course.title} className="mb-8 aspect-video w-full rounded-lg object-cover" />
+            <button
+              type="button"
+              onClick={() => setZoomOpen(true)}
+              className="group relative mb-8 block aspect-video w-full overflow-hidden rounded-lg"
+              aria-label={`Zoom ${course.title} image`}
+            >
+              <img src={course.image} alt={course.title} className="h-full w-full object-cover" />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/20">
+                <HiOutlineZoomIn className="text-white opacity-0 drop-shadow-lg transition-opacity group-hover:opacity-100" size={36} />
+              </div>
+            </button>
           )}
           <h2 className="text-xl font-semibold text-navy-900">About this course</h2>
           <p className="mt-3 leading-relaxed text-steel">{course.description}</p>
@@ -127,6 +138,15 @@ const CourseDetail = () => {
           </Link>
         </aside>
       </section>
+
+      {zoomOpen && course.image && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm" onClick={() => setZoomOpen(false)}>
+          <button type="button" className="absolute right-5 top-5 text-white/80 hover:text-white" onClick={() => setZoomOpen(false)} aria-label="Close image zoom">
+            <HiX size={28} />
+          </button>
+          <img src={course.image} alt={course.title} onClick={(event) => event.stopPropagation()} className="max-h-[90vh] max-w-[90vw] rounded-md object-contain" />
+        </div>
+      )}
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

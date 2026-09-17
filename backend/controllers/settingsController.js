@@ -6,6 +6,12 @@ const STAT_DEFAULTS = {
   industryPartners: 15,
   branchesSupported: 8,
 };
+const STAT_LABEL_DEFAULTS = {
+  studentsTrainedLabel: "Students Trained",
+  projectsDeliveredLabel: "Projects Delivered",
+  industryPartnersLabel: "Industry Partners",
+  branchesSupportedLabel: "Branches Supported",
+};
 
 const syncStats = (settings) => {
   const merged = {
@@ -20,6 +26,10 @@ const syncStats = (settings) => {
     const value = merged[key] ?? STAT_DEFAULTS[key];
     settings[key] = Number(value) || 0;
     settings.stats = { ...(settings.stats?.toObject?.() || settings.stats || {}), [key]: Number(value) || 0 };
+  });
+
+  Object.entries(STAT_LABEL_DEFAULTS).forEach(([key, defaultValue]) => {
+    settings[key] = settings[key] || defaultValue;
   });
 
   return settings;
@@ -41,6 +51,13 @@ const getOrCreateSettings = async () => {
     if (settings[key] === undefined || settings[key] === null || settings.stats?.[key] === undefined || settings.stats?.[key] === null) {
       settings[key] = defaultValue;
       settings.stats[key] = defaultValue;
+      changed = true;
+    }
+  }
+
+  for (const [key, defaultValue] of Object.entries(STAT_LABEL_DEFAULTS)) {
+    if (!settings[key]) {
+      settings[key] = defaultValue;
       changed = true;
     }
   }
@@ -77,6 +94,10 @@ const EDITABLE_FIELDS = [
   "projectsDelivered",
   "industryPartners",
   "branchesSupported",
+  "studentsTrainedLabel",
+  "projectsDeliveredLabel",
+  "industryPartnersLabel",
+  "branchesSupportedLabel",
 ];
 const EDITABLE_SOCIAL_FIELDS = ["facebook", "instagram", "linkedin", "youtube", "twitter"];
 const NUMERIC_FIELDS = ["studentsTrained", "projectsDelivered", "industryPartners", "branchesSupported"];

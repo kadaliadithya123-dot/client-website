@@ -15,6 +15,10 @@ const settingsSchema = new mongoose.Schema(
     projectsDelivered: { type: Number, default: 120 },
     industryPartners: { type: Number, default: 15 },
     branchesSupported: { type: Number, default: 8 },
+    studentsTrainedLabel: { type: String, default: "Students Trained" },
+    projectsDeliveredLabel: { type: String, default: "Projects Delivered" },
+    industryPartnersLabel: { type: String, default: "Industry Partners" },
+    branchesSupportedLabel: { type: String, default: "Branches Supported" },
     social: {
       facebook: { type: String, default: "" },
       instagram: { type: String, default: "https://instagram.com/sritech_projects" },

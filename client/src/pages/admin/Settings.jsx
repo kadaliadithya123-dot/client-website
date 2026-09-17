@@ -30,7 +30,18 @@ const Settings = () => {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await api.put("/settings", settings);
+      const payload = {
+        ...settings,
+        studentsTrained: Number(settings.studentsTrained) || 0,
+        projectsDelivered: Number(settings.projectsDelivered) || 0,
+        industryPartners: Number(settings.industryPartners) || 0,
+        branchesSupported: Number(settings.branchesSupported) || 0,
+        studentsTrainedLabel: settings.studentsTrainedLabel || "Students Trained",
+        projectsDeliveredLabel: settings.projectsDeliveredLabel || "Projects Delivered",
+        industryPartnersLabel: settings.industryPartnersLabel || "Industry Partners",
+        branchesSupportedLabel: settings.branchesSupportedLabel || "Branches Supported",
+      };
+      const res = await api.put("/settings", payload);
       savedOnceRef.current = true;
       setSettings(res.data.data);
       toast.success("Settings updated");
@@ -92,21 +103,31 @@ const Settings = () => {
         <h2 className="pt-2 text-sm font-semibold uppercase tracking-wide text-steel">Homepage Stats</h2>
         <div className="grid grid-cols-2 gap-3">
           {[
-            ["studentsTrained", "Students Trained"],
-            ["projectsDelivered", "Projects Delivered"],
-            ["industryPartners", "Industry Partners"],
-            ["branchesSupported", "Branches Supported"],
-          ].map(([field, label]) => (
-            <input
-              key={field}
-              type="number"
-              min="0"
-              value={settings[field] ?? ""}
-              onChange={(e) => handleChange(field, e.target.value)}
-              placeholder={label}
-              aria-label={label}
-              className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-            />
+            ["studentsTrained", "studentsTrainedLabel", "Students Trained"],
+            ["projectsDelivered", "projectsDeliveredLabel", "Projects Delivered"],
+            ["industryPartners", "industryPartnersLabel", "Industry Partners"],
+            ["branchesSupported", "branchesSupportedLabel", "Branches Supported"],
+          ].map(([numberField, labelField, defaultLabel]) => (
+            <div key={numberField} className="contents">
+              <div>
+                <label className="text-xs text-steel">Number</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={settings[numberField] ?? ""}
+                  onChange={(e) => handleChange(numberField, e.target.value)}
+                  className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-steel">Label</label>
+                <input
+                  value={settings[labelField] ?? defaultLabel}
+                  onChange={(e) => handleChange(labelField, e.target.value)}
+                  className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                />
+              </div>
+            </div>
           ))}
         </div>
 

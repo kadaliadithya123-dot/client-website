@@ -72,10 +72,10 @@ const Home = () => {
   }, []);
 
   const stats = [
-    { value: settings?.studentsTrained ?? defaultStats.studentsTrained, suffix: "+", label: "Students Trained" },
-    { value: settings?.projectsDelivered ?? defaultStats.projectsDelivered, suffix: "+", label: "Projects Delivered" },
-    { value: settings?.industryPartners ?? defaultStats.industryPartners, suffix: "+", label: "Industry Partners" },
-    { value: settings?.branchesSupported ?? defaultStats.branchesSupported, suffix: "", label: "Branches Supported" },
+    { value: settings?.studentsTrained ?? defaultStats.studentsTrained, suffix: "+", label: settings?.studentsTrainedLabel || "Students Trained" },
+    { value: settings?.projectsDelivered ?? defaultStats.projectsDelivered, suffix: "+", label: settings?.projectsDeliveredLabel || "Projects Delivered" },
+    { value: settings?.industryPartners ?? defaultStats.industryPartners, suffix: "+", label: settings?.industryPartnersLabel || "Industry Partners" },
+    { value: settings?.branchesSupported ?? defaultStats.branchesSupported, suffix: "", label: settings?.branchesSupportedLabel || "Branches Supported" },
   ];
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { HiOutlineDownload, HiOutlinePlay, HiOutlineUsers, HiOutlineChartBar } from "react-icons/hi";
+import { HiOutlineDownload, HiOutlinePlay, HiOutlineUsers, HiOutlineChartBar, HiOutlineZoomIn, HiX, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import api from "../services/api.js";
 import Spinner from "../components/Loader.jsx";
 
@@ -9,6 +9,7 @@ const ProjectDetail = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -64,9 +65,17 @@ const ProjectDetail = () => {
         <div className="lg:col-span-2">
           {gallery.length > 0 ? (
             <div>
-              <div className="aspect-video overflow-hidden rounded-lg bg-navy-800">
+              <button
+                type="button"
+                onClick={() => setZoomOpen(true)}
+                className="group relative block aspect-video w-full overflow-hidden rounded-lg bg-navy-800"
+                aria-label={`Zoom ${project.title} image`}
+              >
                 <img src={gallery[activeImg]} alt={project.title} className="h-full w-full object-cover" />
-              </div>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/20">
+                  <HiOutlineZoomIn className="text-white opacity-0 drop-shadow-lg transition-opacity group-hover:opacity-100" size={36} />
+                </div>
+              </button>
               {gallery.length > 1 && (
                 <div className="mt-3 flex gap-2 overflow-x-auto">
                   {gallery.map((img, i) => (
@@ -103,6 +112,25 @@ const ProjectDetail = () => {
             </>
           )}
         </div>
+
+        {zoomOpen && gallery.length > 0 && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm" onClick={() => setZoomOpen(false)}>
+            <button type="button" className="absolute right-5 top-5 text-white/80 hover:text-white" onClick={() => setZoomOpen(false)} aria-label="Close image zoom">
+              <HiX size={28} />
+            </button>
+            {gallery.length > 1 && (
+              <button type="button" className="absolute left-3 text-white/70 hover:text-white sm:left-6" onClick={(event) => { event.stopPropagation(); setActiveImg((i) => (i - 1 + gallery.length) % gallery.length); }} aria-label="Previous image">
+                <HiChevronLeft size={36} />
+              </button>
+            )}
+            <img src={gallery[activeImg]} alt={project.title} onClick={(event) => event.stopPropagation()} className="max-h-[90vh] max-w-[90vw] rounded-md object-contain" />
+            {gallery.length > 1 && (
+              <button type="button" className="absolute right-3 text-white/70 hover:text-white sm:right-6" onClick={(event) => { event.stopPropagation(); setActiveImg((i) => (i + 1) % gallery.length); }} aria-label="Next image">
+                <HiChevronRight size={36} />
+              </button>
+            )}
+          </div>
+        )}
 
         <aside className="space-y-3 rounded-lg border border-black/5 p-6">
           <h3 className="text-sm font-semibold uppercase tracking-wide text-steel">Resources</h3>

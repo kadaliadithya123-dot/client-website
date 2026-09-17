@@ -129,7 +129,7 @@ const AdminLayout = () => {
             Signed in as <span className="font-medium text-navy-900">{admin?.name}</span>
           </div>
         </header>
-        <main key={location.pathname} className="admin-page-enter flex-1 overflow-y-auto p-4 sm:p-6">
+        <main key={location.pathname} className="admin-page-enter relative flex-1 overflow-y-auto p-4 sm:p-6">
           <Outlet />
         </main>
       </div>

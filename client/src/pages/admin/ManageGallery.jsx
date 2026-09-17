@@ -16,7 +16,7 @@ const ManageGallery = () => {
   const [addingCategory, setAddingCategory] = useState(false);
   const [renamingId, setRenamingId] = useState(null);
   const [renameValue, setRenameValue] = useState("");
-  const [editingImage, setEditingImage] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editCategory, setEditCategory] = useState("");
   const [savingEdit, setSavingEdit] = useState(false);
@@ -125,18 +125,22 @@ const ManageGallery = () => {
     }
   };
 
-  const openEditImage = (img) => {
-    setEditingImage(img);
+  const toggleEdit = (img) => {
+    if (editingId === img._id) {
+      setEditingId(null);
+      return;
+    }
+    setEditingId(img._id);
     setEditTitle(img.title || "");
     setEditCategory(img.category);
   };
 
-  const saveImageEdit = async () => {
+  const saveImageEdit = async (img) => {
     setSavingEdit(true);
     try {
-      await api.put(`/gallery/${editingImage._id}`, { title: editTitle, category: editCategory });
+      await api.put(`/gallery/${img._id}`, { title: editTitle, category: editCategory });
       toast.success("Image updated");
-      setEditingImage(null);
+      setEditingId(null);
       fetchImages();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update image");
@@ -172,7 +176,7 @@ const ManageGallery = () => {
           <HiOutlineUpload /> {uploading ? "Uploading..." : "Upload"}
         </button>
       </form>
-      <p className="mt-2 text-xs text-steel">Uploads apply the same category to every file at once. To add a caption to a specific photo, upload it, then click the pencil icon on that image below.</p>
+      <p className="mt-2 text-xs text-steel">Uploads apply the same category to every file at once. To add a caption to a specific photo, click its pencil icon below.</p>
 
       <div className="mt-6 flex flex-wrap gap-2">
         <button onClick={() => setFilter("")} className={`rounded-full px-4 py-1.5 text-sm font-medium ${filter === "" ? "bg-brand-500 text-white" : "bg-mist text-steel"}`}>All</button>
@@ -183,21 +187,35 @@ const ManageGallery = () => {
         ))}
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {loading ? <p className="text-sm text-steel">Loading...</p> : images.length === 0 ? <p className="text-sm text-steel">No images yet.</p> : images.map((img) => (
-          <div key={img._id} className="group relative aspect-square overflow-hidden rounded-lg bg-navy-800">
-            <img src={img.image} alt={img.title || img.category} className="h-full w-full object-cover" />
-            {img.title && <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2"><p className="line-clamp-2 text-[11px] text-white">{img.title}</p></div>}
-            <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-              <button onClick={() => openEditImage(img)} className="grid h-8 w-8 place-items-center rounded-full bg-black/60 text-white" title="Edit caption/category"><HiOutlinePencil size={15} /></button>
-              <button onClick={() => handleDelete(img._id)} className="grid h-8 w-8 place-items-center rounded-full bg-black/60 text-white" title="Delete"><HiOutlineTrash size={15} /></button>
+          <div key={img._id} className={`overflow-hidden rounded-lg border border-black/5 bg-white transition-all ${editingId === img._id ? "col-span-2 row-span-2 sm:col-span-2 lg:col-span-2" : ""}`}>
+            <div className="group relative aspect-square bg-navy-800">
+              <img src={img.image} alt={img.title || img.category} className="h-full w-full object-contain" />
+              {img.title && editingId !== img._id && <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2"><p className="line-clamp-2 text-[11px] text-white">{img.title}</p></div>}
+              <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                <button type="button" onClick={() => toggleEdit(img)} className={`grid h-8 w-8 place-items-center rounded-full text-white ${editingId === img._id ? "bg-brand-500" : "bg-black/60"}`} title={editingId === img._id ? "Close editor" : "Edit caption/category"} aria-label={editingId === img._id ? "Close editor" : "Edit caption/category"}>
+                  {editingId === img._id ? <HiX size={15} /> : <HiOutlinePencil size={15} />}
+                </button>
+                <button type="button" onClick={() => handleDelete(img._id)} className="grid h-8 w-8 place-items-center rounded-full bg-black/60 text-white" title="Delete" aria-label="Delete image"><HiOutlineTrash size={15} /></button>
+              </div>
             </div>
+            {editingId === img._id && (
+              <div className="space-y-3 border-t border-black/5 p-3">
+                <label className="block text-xs font-medium text-steel">Caption<input placeholder="e.g. Robotics workshop, Jan 2026" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400" /></label>
+                <label className="block text-xs font-medium text-steel">Category<select value={editCategory} onChange={(e) => setEditCategory(e.target.value)} className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400">{categories.map((cat) => <option key={cat._id} value={cat.name}>{cat.name}</option>)}</select></label>
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => saveImageEdit(img)} disabled={savingEdit} className="btn-primary flex-1 !py-2 text-xs disabled:opacity-60">{savingEdit ? "Saving..." : <><HiCheck size={14} /> Save</>}</button>
+                  <button type="button" onClick={() => setEditingId(null)} className="rounded-md border border-black/10 px-3 py-2 text-xs font-semibold text-steel hover:bg-mist">Cancel</button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
       {categoryPanelOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center bg-black/50 p-4 pt-20">
           <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white p-6 shadow-2xl">
             <div className="flex items-center justify-between"><h2 className="text-lg font-semibold text-navy-900">Manage Categories</h2><button type="button" onClick={() => setCategoryPanelOpen(false)} className="text-steel hover:text-navy-900" aria-label="Close category manager"><HiX size={22} /></button></div>
             <form onSubmit={handleAddCategory} className="mt-4 flex gap-2">
@@ -224,19 +242,6 @@ const ManageGallery = () => {
         </div>
       )}
 
-      {editingImage && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
-          <div className="relative w-full max-w-sm rounded-lg bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between"><h2 className="text-lg font-semibold text-navy-900">Edit Image</h2><button type="button" onClick={() => setEditingImage(null)} className="text-steel hover:text-navy-900" aria-label="Close image editor"><HiX size={22} /></button></div>
-            <img src={editingImage.image} alt="" className="mt-3 h-32 w-full rounded-md object-cover" />
-            <div className="mt-4 space-y-3">
-              <label className="block text-xs font-medium text-steel">Caption<input placeholder="e.g. Robotics workshop, Jan 2026" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400" /></label>
-              <label className="block text-xs font-medium text-steel">Category<select value={editCategory} onChange={(e) => setEditCategory(e.target.value)} className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400">{categories.map((cat) => <option key={cat._id} value={cat.name}>{cat.name}</option>)}</select></label>
-              <button type="button" onClick={saveImageEdit} disabled={savingEdit} className="btn-primary w-full disabled:opacity-60">{savingEdit ? "Saving..." : "Save"}</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
