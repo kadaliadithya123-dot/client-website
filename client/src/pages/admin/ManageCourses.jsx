@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlus, HiX } from "react-icons/hi";
 import api from "../../services/api.js";
@@ -26,6 +26,12 @@ const ManageCourses = () => {
   const [currentImage, setCurrentImage] = useState("");
   const [removeImage, setRemoveImage] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [inlineEditingId, setInlineEditingId] = useState(null);
+  const [inlineEditForm, setInlineEditForm] = useState(emptyForm);
+  const [inlineImageFile, setInlineImageFile] = useState(null);
+  const [inlineCurrentImage, setInlineCurrentImage] = useState("");
+  const [inlineRemoveImage, setInlineRemoveImage] = useState(false);
+  const [savingInlineEdit, setSavingInlineEdit] = useState(false);
 
   const fetchCourses = () => {
     setLoading(true);
@@ -48,8 +54,8 @@ const ManageCourses = () => {
   };
 
   const openEdit = (course) => {
-    setEditing(course);
-    setForm({
+    setInlineEditingId(course._id);
+    setInlineEditForm({
       title: course.title,
       description: course.description,
       duration: course.duration,
@@ -60,10 +66,28 @@ const ManageCourses = () => {
       syllabus: (course.syllabus || []).join("\n"),
       eligibility: course.eligibility || "",
     });
-    setImageFile(null);
-    setCurrentImage(course.image || "");
-    setRemoveImage(false);
-    setModalOpen(true);
+    setInlineImageFile(null);
+    setInlineCurrentImage(course.image || "");
+    setInlineRemoveImage(false);
+  };
+
+  const handleInlineSave = async (courseId) => {
+    setSavingInlineEdit(true);
+    try {
+      const data = new FormData();
+      Object.entries(inlineEditForm).forEach(([key, value]) => data.append(key, value));
+      if (inlineImageFile) data.append("image", inlineImageFile);
+      data.append("removeImage", inlineRemoveImage ? "true" : "false");
+
+      await api.put(`/courses/${courseId}`, data);
+      toast.success("Course updated");
+      setInlineEditingId(null);
+      fetchCourses();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update course");
+    } finally {
+      setSavingInlineEdit(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -143,22 +167,151 @@ const ManageCourses = () => {
               </tr>
             ) : (
               courses.map((c) => (
-                <tr key={c._id} className="border-t border-black/5">
-                  <td className="px-4 py-3 font-medium text-navy-900">{c.title}</td>
-                  <td className="px-4 py-3">{c.level}</td>
-                  <td className="px-4 py-3">₹{c.fee}</td>
-                  <td className="px-4 py-3">{c.duration}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-end gap-2">
-                      <button onClick={() => openEdit(c)} className="rounded-md p-2 text-brand-600 hover:bg-brand-50">
-                        <HiOutlinePencil />
-                      </button>
-                      <button onClick={() => handleDelete(c._id)} className="rounded-md p-2 text-red-500 hover:bg-red-50">
-                        <HiOutlineTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                <Fragment key={c._id}>
+                  <tr className="border-t border-black/5">
+                    <td className="px-4 py-3 font-medium text-navy-900">{c.title}</td>
+                    <td className="px-4 py-3">{c.level}</td>
+                    <td className="px-4 py-3">₹{c.fee}</td>
+                    <td className="px-4 py-3">{c.duration}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end gap-2">
+                        <button onClick={() => openEdit(c)} className="rounded-md p-2 text-brand-600 hover:bg-brand-50">
+                          <HiOutlinePencil />
+                        </button>
+                        <button onClick={() => handleDelete(c._id)} className="rounded-md p-2 text-red-500 hover:bg-red-50">
+                          <HiOutlineTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  {inlineEditingId === c._id && (
+                    <tr className="bg-brand-50/60">
+                      <td colSpan={5} className="px-4 py-4">
+                        <div className="space-y-3">
+                          <div className="grid gap-3 md:grid-cols-2">
+                            <input
+                              required
+                              value={inlineEditForm.title}
+                              onChange={(e) => setInlineEditForm({ ...inlineEditForm, title: e.target.value })}
+                              placeholder="Title"
+                              className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                            />
+                            <select
+                              value={inlineEditForm.level}
+                              onChange={(e) => setInlineEditForm({ ...inlineEditForm, level: e.target.value })}
+                              className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                            >
+                              <option>Beginner</option>
+                              <option>Intermediate</option>
+                              <option>Advanced</option>
+                            </select>
+                          </div>
+                          <textarea
+                            required
+                            rows={3}
+                            value={inlineEditForm.description}
+                            onChange={(e) => setInlineEditForm({ ...inlineEditForm, description: e.target.value })}
+                            placeholder="Description"
+                            className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                          />
+                          <div className="grid gap-3 md:grid-cols-2">
+                            <input
+                              required
+                              value={inlineEditForm.duration}
+                              onChange={(e) => setInlineEditForm({ ...inlineEditForm, duration: e.target.value })}
+                              placeholder="Duration"
+                              className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                            />
+                            <input
+                              required
+                              type="number"
+                              value={inlineEditForm.fee}
+                              onChange={(e) => setInlineEditForm({ ...inlineEditForm, fee: e.target.value })}
+                              placeholder="Fee"
+                              className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                            />
+                          </div>
+                          <input
+                            value={inlineEditForm.trainer}
+                            onChange={(e) => setInlineEditForm({ ...inlineEditForm, trainer: e.target.value })}
+                            placeholder="Trainer"
+                            className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                          />
+                          <input
+                            value={inlineEditForm.technologies}
+                            onChange={(e) => setInlineEditForm({ ...inlineEditForm, technologies: e.target.value })}
+                            placeholder="Technologies (comma separated)"
+                            className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                          />
+                          <textarea
+                            rows={3}
+                            value={inlineEditForm.syllabus}
+                            onChange={(e) => setInlineEditForm({ ...inlineEditForm, syllabus: e.target.value })}
+                            placeholder="Syllabus (one item per line)"
+                            className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                          />
+                          <input
+                            value={inlineEditForm.eligibility}
+                            onChange={(e) => setInlineEditForm({ ...inlineEditForm, eligibility: e.target.value })}
+                            placeholder="Eligibility"
+                            className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                          />
+
+                          <div>
+                            <label className="text-xs font-medium text-steel">Course Image</label>
+                            {inlineCurrentImage && !inlineRemoveImage && (
+                              <div className="mt-2 flex items-center gap-3">
+                                <img src={inlineCurrentImage} alt="Current course" className="h-16 w-16 rounded-md object-cover" />
+                                <button
+                                  type="button"
+                                  onClick={() => setInlineRemoveImage(true)}
+                                  className="text-xs font-medium text-red-500 hover:text-red-600"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            )}
+                            {inlineRemoveImage && (
+                              <p className="mt-2 text-xs text-steel">
+                                Image will be removed on save. {" "}
+                                <button type="button" onClick={() => setInlineRemoveImage(false)} className="font-medium text-brand-600">
+                                  Undo
+                                </button>
+                              </p>
+                            )}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                setInlineImageFile(e.target.files[0]);
+                                setInlineRemoveImage(false);
+                              }}
+                              className="mt-2 w-full text-sm"
+                            />
+                          </div>
+
+                          <div className="flex justify-end gap-2 pt-2">
+                            <button
+                              type="button"
+                              onClick={() => setInlineEditingId(null)}
+                              className="rounded-md border border-black/10 px-3 py-2 text-sm font-medium text-steel hover:bg-white"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleInlineSave(c._id)}
+                              disabled={savingInlineEdit}
+                              className="btn-primary disabled:opacity-60"
+                            >
+                              {savingInlineEdit ? "Saving..." : "Save"}
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               ))
             )}
           </tbody>
