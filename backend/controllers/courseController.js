@@ -1,5 +1,18 @@
 const Course = require("../models/Course");
 
+const getPublicUrl = (relativePath) => {
+  if (!relativePath) return relativePath;
+  if (/^https?:\/\//i.test(relativePath)) return relativePath;
+  const base = (process.env.PUBLIC_BASE_URL || process.env.CLIENT_URL || "").replace(/\/$/, "");
+  if (!base) return relativePath;
+  return `${base}${relativePath.startsWith("/") ? "" : "/"}${relativePath}`;
+};
+
+const normalizeCourse = (item) => {
+  const doc = item.toObject ? item.toObject() : { ...item };
+  return { ...doc, image: getPublicUrl(doc.image) };
+};
+
 const slugify = (str) =>
   str
     .toLowerCase()
@@ -30,7 +43,7 @@ const getCourses = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: courses,
+      data: courses.map(normalizeCourse),
       pagination: { total, page: pageNum, pages: Math.ceil(total / limitNum) },
     });
   } catch (err) {
@@ -61,7 +74,7 @@ const createCourse = async (req, res, next) => {
     const body = { ...req.body };
     if (typeof body.technologies === "string") body.technologies = body.technologies.split(",").map((t) => t.trim());
     if (typeof body.syllabus === "string") body.syllabus = body.syllabus.split("\n").map((s) => s.trim()).filter(Boolean);
-    if (req.file) body.image = req.file.path;
+    if (req.file) body.image = getPublicUrl(`/uploads/${req.file.filename}`);
     body.slug = slugify(body.title || "");
 
     const course = await Course.create(body);
@@ -80,7 +93,7 @@ const updateCourse = async (req, res, next) => {
     if (typeof body.technologies === "string") body.technologies = body.technologies.split(",").map((t) => t.trim());
     if (typeof body.syllabus === "string") body.syllabus = body.syllabus.split("\n").map((s) => s.trim()).filter(Boolean);
     if (req.file) {
-      body.image = req.file.path;
+      body.image = getPublicUrl(`/uploads/${req.file.filename}`);
     } else if (body.removeImage === "true") {
       body.image = "";
     }

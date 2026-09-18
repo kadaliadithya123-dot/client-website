@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -61,7 +60,6 @@ function App() {
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
-      <Analytics />
     </>
   );
 }

@@ -1,5 +1,23 @@
 const Project = require("../models/Project");
 
+const getPublicUrl = (relativePath) => {
+  if (!relativePath) return relativePath;
+  if (/^https?:\/\//i.test(relativePath)) return relativePath;
+  const base = (process.env.PUBLIC_BASE_URL || process.env.CLIENT_URL || "").replace(/\/$/, "");
+  if (!base) return relativePath;
+  return `${base}${relativePath.startsWith("/") ? "" : "/"}${relativePath}`;
+};
+
+const normalizeProject = (item) => {
+  const doc = item.toObject ? item.toObject() : { ...item };
+  return {
+    ...doc,
+    thumbnail: getPublicUrl(doc.thumbnail),
+    pdfUrl: getPublicUrl(doc.pdfUrl),
+    images: Array.isArray(doc.images) ? doc.images.map(getPublicUrl) : doc.images,
+  };
+};
+
 const slugify = (str) =>
   str
     .toLowerCase()
@@ -30,7 +48,7 @@ const getProjects = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: projects,
+      data: projects.map(normalizeProject),
       pagination: { total, page: pageNum, pages: Math.ceil(total / limitNum) },
     });
   } catch (err) {
@@ -62,9 +80,9 @@ const createProject = async (req, res, next) => {
     if (typeof body.technologies === "string") body.technologies = body.technologies.split(",").map((t) => t.trim());
     body.slug = slugify(body.title || "");
 
-    if (req.files?.thumbnail?.[0]) body.thumbnail = req.files.thumbnail[0].path;
-    if (req.files?.images?.length) body.images = req.files.images.map((f) => f.path);
-    if (req.files?.pdf?.[0]) body.pdfUrl = req.files.pdf[0].path;
+    if (req.files?.thumbnail?.[0]) body.thumbnail = getPublicUrl(`/uploads/${req.files.thumbnail[0].filename}`);
+    if (req.files?.images?.length) body.images = req.files.images.map((f) => getPublicUrl(`/uploads/${f.filename}`));
+    if (req.files?.pdf?.[0]) body.pdfUrl = getPublicUrl(`/uploads/${req.files.pdf[0].filename}`);
 
     const project = await Project.create(body);
     res.status(201).json({ success: true, data: project });
@@ -89,13 +107,13 @@ const updateProject = async (req, res, next) => {
     if (body.title) body.slug = slugify(body.title);
 
     if (req.files?.thumbnail?.[0]) {
-      body.thumbnail = req.files.thumbnail[0].path;
+      body.thumbnail = getPublicUrl(`/uploads/${req.files.thumbnail[0].filename}`);
     } else if (body.removeThumbnail === "true") {
       body.thumbnail = "";
     }
 
     if (req.files?.pdf?.[0]) {
-      body.pdfUrl = req.files.pdf[0].path;
+      body.pdfUrl = getPublicUrl(`/uploads/${req.files.pdf[0].filename}`);
     } else if (body.removePdf === "true") {
       body.pdfUrl = "";
     }
@@ -106,7 +124,7 @@ const updateProject = async (req, res, next) => {
       images = images.filter((img) => !toRemove.includes(img));
     }
     if (req.files?.images?.length) {
-      images = [...images, ...req.files.images.map((f) => f.path)];
+      images = [...images, ...req.files.images.map((f) => getPublicUrl(`/uploads/${f.filename}`))];
     }
     body.images = images;
 

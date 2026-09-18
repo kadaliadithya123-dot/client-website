@@ -255,7 +255,7 @@ const ManageProjects = () => {
       </div>
 
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 pt-6">
           <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-navy-900">{editing ? "Edit Project" : "New Project"}</h2>
@@ -331,7 +331,7 @@ const ManageProjects = () => {
       )}
 
       {domainPanelOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 pt-6">
           <div className="w-full max-w-md rounded-lg bg-white p-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-navy-900">Manage Domains</h2>

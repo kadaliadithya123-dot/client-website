@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -108,17 +109,46 @@ const seedDefaultData = async () => {
   }
 };
 
+const uploadDir = process.env.UPLOAD_DIR
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.resolve(__dirname, "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true, mode: 0o777 });
+}
+
+try {
+  fs.chmodSync(uploadDir, 0o777);
+} catch (err) {
+  // Ignore chmod failures where host ACL rules are stricter.
+}
+
 const app = express();
 
-// Allow one or more comma-separated origins
-const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
-  .split(",")
-  .map((o) => o.trim());
+// Allow one or more comma-separated origins and common deployment hosts.
+const allowedOrigins = [
+  ...new Set(
+    (process.env.CLIENT_URL || "http://localhost:5173,https://sritechsolution.com,https://www.sritechsolution.com")
+      .split(",")
+      .map((o) => o.trim())
+      .filter(Boolean)
+  ),
+];
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  return (
+    origin.endsWith(".vercel.app") ||
+    origin.endsWith(".netlify.app") ||
+    origin.endsWith(".sritechsolution.com")
+  );
+};
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -132,7 +162,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(uploadDir));
 
 app.get("/api/health", (req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
 
@@ -152,7 +182,7 @@ app.use("/api/visitors", visitorRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 connectDB()
   .then(seedDefaultData)

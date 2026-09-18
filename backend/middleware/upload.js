@@ -1,16 +1,30 @@
-const cloudinary = require("../config/cloudinary");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const path = require("path");
+const fs = require("fs");
 const multer = require("multer");
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: async (req, file) => {
-    const isPdf = file.mimetype === "application/pdf";
-    return {
-      folder: "sritech",
-      resource_type: isPdf ? "raw" : "image",
-      public_id: `${Date.now()}-${file.originalname.split(".")[0].replace(/[^a-zA-Z0-9_-]/g, "-")}`,
-    };
+const uploadDir = process.env.UPLOAD_DIR
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.resolve(__dirname, "..", "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true, mode: 0o777 });
+}
+
+try {
+  fs.chmodSync(uploadDir, 0o777);
+} catch (err) {
+  // Ignore chmod failures on hosts where the filesystem enforces stricter ACLs.
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const base = path
+      .basename(file.originalname, ext)
+      .replace(/[^a-zA-Z0-9_-]/g, "-")
+      .slice(0, 40);
+    cb(null, `${base}-${Date.now()}-${Math.round(Math.random() * 1e5)}${ext}`);
   },
 });
 

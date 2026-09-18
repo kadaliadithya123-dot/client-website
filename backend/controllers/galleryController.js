@@ -1,5 +1,18 @@
 const Gallery = require("../models/Gallery");
 
+const getPublicUrl = (relativePath) => {
+  if (!relativePath) return relativePath;
+  if (/^https?:\/\//i.test(relativePath)) return relativePath;
+  const base = (process.env.PUBLIC_BASE_URL || process.env.CLIENT_URL || "").replace(/\/$/, "");
+  if (!base) return relativePath;
+  return `${base}${relativePath.startsWith("/") ? "" : "/"}${relativePath}`;
+};
+
+const normalizeGalleryItem = (item) => {
+  const doc = item.toObject ? item.toObject() : { ...item };
+  return { ...doc, image: getPublicUrl(doc.image) };
+};
+
 // @desc  Get gallery images (public, filter by category, infinite-scroll style pagination)
 // @route GET /api/gallery
 const getGallery = async (req, res, next) => {
@@ -21,7 +34,7 @@ const getGallery = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: images,
+      data: images.map(normalizeGalleryItem),
       pagination: { total, page: pageNum, pages: Math.ceil(total / limitNum), hasMore: pageNum * limitNum < total },
     });
   } catch (err) {
@@ -40,7 +53,7 @@ const uploadGalleryImages = async (req, res, next) => {
     }
     const { category, title = "" } = req.body;
     const docs = await Gallery.insertMany(
-      req.files.map((f) => ({ image: f.path, category, title }))
+      req.files.map((f) => ({ image: getPublicUrl(`/uploads/${f.filename}`), category, title }))
     );
     res.status(201).json({ success: true, data: docs });
   } catch (err) {

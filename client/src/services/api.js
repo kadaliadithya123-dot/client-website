@@ -1,7 +1,12 @@
 import axios from "axios";
 
+const envApiUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const apiBaseUrl =
+  envApiUrl ||
+  (window.location.hostname === "localhost" ? "http://localhost:5000/api" : "/api");
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: apiBaseUrl,
 });
 
 // Attach the admin JWT (if present) to every request
