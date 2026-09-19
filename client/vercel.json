@@ -1,5 +1,8 @@
 {
   "routes": [
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/sritech-logo.svg", "dest": "/sritech-logo.svg" },
+    { "src": "/favicon.ico", "dest": "/favicon.ico" },
     { "src": "/robots.txt", "dest": "/robots.txt" },
     { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
     { "src": "/(.*)", "dest": "/index.html" }
