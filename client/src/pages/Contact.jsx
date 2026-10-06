@@ -38,12 +38,11 @@ const Contact = () => {
     settings?.emails && settings.emails.length > 0 ? settings.emails : settings?.email || DEFAULT_CONTACT.emails
   );
   const address = settings?.address || DEFAULT_CONTACT.address;
-  const mapEmbedUrl = settings?.mapEmbedUrl || DEFAULT_CONTACT.mapsEmbedUrl;
 
   return (
     <div className="transition-colors duration-200">
-      {/* Header Banner */}
-      <section className="border-b border-slate-200 bg-slate-100 py-14 text-navy-950 transition-colors duration-200 dark:border-transparent dark:bg-navy-950 dark:text-white">
+      {/* Header Banner — smooth gradual transition without harsh divider lines */}
+      <section className="bg-gradient-to-b from-slate-100/60 via-slate-50/40 to-transparent py-14 text-navy-950 transition-colors duration-300 dark:from-navy-900/50 dark:via-navy-950/40 dark:to-transparent dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">Contact Us</span>
           <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl text-navy-950 dark:text-white">
@@ -118,17 +117,29 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Interactive Map preview */}
-          <div className="mt-8 aspect-video overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-navy-950">
-            <iframe
-              title="Sritech Solutions location"
-              src={mapEmbedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          {/* Office & Counseling Hours */}
+          <div className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-white/10 dark:bg-navy-900/40">
+            <h3 className="font-semibold text-navy-900 dark:text-white">Office & Embedded Lab Hours</h3>
+            <p className="mt-1 text-xs text-slate-500 dark:text-mist/60">
+              Visit our center for live hardware demonstrations, career counseling, and project mentorship.
+            </p>
+            <div className="mt-4 space-y-2 text-xs">
+              <div className="flex justify-between py-1 border-b border-slate-200/60 dark:border-white/5">
+                <span className="text-slate-600 dark:text-mist/70">Monday – Friday</span>
+                <span className="font-semibold text-slate-900 dark:text-white">9:00 AM – 7:30 PM</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-200/60 dark:border-white/5">
+                <span className="text-slate-600 dark:text-mist/70">Saturday</span>
+                <span className="font-semibold text-slate-900 dark:text-white">9:30 AM – 6:00 PM</span>
+              </div>
+              <div className="flex justify-between py-1">
+                <span className="text-slate-600 dark:text-mist/70">Sunday</span>
+                <span className="font-semibold text-brand-600 dark:text-brand-400">By Appointment / Batches</span>
+              </div>
+            </div>
+            <p className="mt-4 text-xs text-slate-500 dark:text-mist/60">
+              📍 Full interactive Google Map & directions are available right below.
+            </p>
           </div>
         </div>
 

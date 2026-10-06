@@ -34,8 +34,8 @@ const fadeUpProps = {
   variants: fadeUp,
   initial: "hidden",
   whileInView: "visible",
-  viewport: { once: false, amount: 0.3 },
-  transition: { duration: 0.7, ease: "easeOut" },
+  viewport: { once: true, amount: 0.1 },
+  transition: { duration: 0.6, ease: "easeOut" },
 };
 
 // Grid cards stagger in one after another
@@ -87,17 +87,12 @@ const Home = () => {
     { value: settings?.industryPartners ?? defaultStats.industryPartners, suffix: "+", label: settings?.industryPartnersLabel || "Industry Partners" },
   ];
 
-  useEffect(() => {
-    document.documentElement.classList.add("snap-scroll");
-    return () => document.documentElement.classList.remove("snap-scroll");
-  }, []);
-
   return (
     <div className="transition-colors duration-200">
       {/* HERO SECTION — responsive light/dark theme */}
       <motion.section
         {...fadeUpProps}
-        className="snap-section relative flex min-h-[90vh] flex-col justify-center overflow-hidden bg-white text-navy-950 transition-colors duration-200 dark:bg-navy-950 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden bg-gradient-to-b from-white via-slate-50/30 to-slate-50/60 text-navy-950 transition-colors duration-300 dark:from-navy-950 dark:via-navy-950 dark:to-navy-900/40 dark:text-white"
       >
         <div
           className="absolute inset-0 opacity-20 dark:opacity-40"
@@ -161,8 +156,8 @@ const Home = () => {
           </motion.div>
         </div>
 
-        {/* Stats Row */}
-        <div className="container-page relative grid grid-cols-2 gap-6 border-t border-slate-200 py-8 transition-colors sm:grid-cols-4 dark:border-white/10">
+        {/* Stats Row — seamless flow without dividing border line */}
+        <div className="container-page relative grid grid-cols-2 gap-6 py-8 transition-colors sm:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
@@ -180,10 +175,10 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* ABOUT SNAPSHOT SECTION */}
+      {/* ABOUT SNAPSHOT SECTION — soft continuous gradient, no harsh dividing line */}
       <motion.section
         {...fadeUpProps}
-        className="snap-section relative flex min-h-[80vh] flex-col justify-center overflow-hidden bg-slate-50 py-16 text-navy-950 transition-colors duration-200 sm:py-24 dark:bg-navy-900 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden bg-gradient-to-b from-slate-50/60 via-slate-50/30 to-white py-16 text-navy-950 transition-colors duration-300 sm:py-20 dark:from-navy-900/40 dark:via-navy-950/70 dark:to-navy-950 dark:text-white"
       >
         <div className="absolute -left-32 top-1/3 h-80 w-80 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
@@ -223,8 +218,11 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* PROJECTS SECTION */}
-      <motion.section {...fadeUpProps} className="snap-section section flex min-h-[80vh] flex-col justify-center bg-white transition-colors duration-200 dark:bg-navy-950">
+      {/* PROJECTS SECTION — seamless light/dark ambient flow */}
+      <motion.section
+        {...fadeUpProps}
+        className="section flex flex-col justify-center bg-gradient-to-b from-white via-slate-50/30 to-slate-50/50 py-16 transition-colors duration-300 sm:py-20 dark:from-navy-950 dark:via-navy-900/30 dark:to-navy-950"
+      >
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -282,10 +280,10 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* COURSES SECTION */}
+      {/* COURSES SECTION — subtle gentle tint without hard dividing cut */}
       <motion.section
         {...fadeUpProps}
-        className="snap-section relative flex min-h-[80vh] flex-col justify-center overflow-hidden bg-slate-50 py-16 text-navy-950 transition-colors duration-200 sm:py-24 dark:bg-navy-900 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden bg-gradient-to-b from-slate-50/50 via-slate-50/30 to-white py-16 text-navy-950 transition-colors duration-300 sm:py-20 dark:from-navy-950 dark:via-navy-900/35 dark:to-navy-950 dark:text-white"
       >
         <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-brand-700/10 blur-3xl" />
         <div className="container-page relative">
@@ -345,9 +343,12 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* GALLERY PREVIEW SECTION */}
+      {/* GALLERY PREVIEW SECTION — seamless soft blend */}
       {gallery.length > 0 && (
-        <motion.section {...fadeUpProps} className="snap-section section flex min-h-[70vh] flex-col justify-center bg-white transition-colors duration-200 dark:bg-navy-950">
+        <motion.section
+          {...fadeUpProps}
+          className="section flex flex-col justify-center bg-gradient-to-b from-white via-slate-50/20 to-slate-50/40 py-16 transition-colors duration-300 sm:py-20 dark:from-navy-950 dark:via-navy-950 dark:to-navy-900/25"
+        >
           <div className="container-page">
             <span className="eyebrow text-brand-600 dark:text-brand-400">Gallery</span>
             <h2 className="mt-2 text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">Life at SriTech</h2>
@@ -379,10 +380,10 @@ const Home = () => {
         </motion.section>
       )}
 
-      {/* CONTACT CTA SECTION */}
+      {/* CONTACT CTA SECTION — soft fading gradient into GoogleMap */}
       <motion.section
         {...fadeUpProps}
-        className="snap-section relative flex min-h-[60vh] flex-col items-center justify-center overflow-hidden bg-slate-100 py-16 text-center text-navy-950 transition-colors duration-200 dark:bg-navy-950 dark:text-white"
+        className="relative flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50/40 via-slate-100/40 to-transparent py-16 text-center text-navy-950 transition-colors duration-300 sm:py-20 dark:from-navy-900/25 dark:via-navy-900/40 dark:to-transparent dark:text-white"
       >
         <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative">

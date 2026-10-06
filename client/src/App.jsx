@@ -23,9 +23,12 @@ import ManageEnrollments from "./pages/admin/ManageEnrollments.jsx";
 import SiteContent from "./pages/admin/SiteContent.jsx";
 import AdminSettings from "./pages/admin/Settings.jsx";
 
+import ScrollToTop from "./components/ScrollToTop.jsx";
+
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         {/* Public site */}
         <Route element={<MainLayout />}>

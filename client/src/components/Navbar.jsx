@@ -47,8 +47,8 @@ const Navbar = () => {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 text-navy-900 border-b border-slate-200/80 shadow-sm backdrop-blur dark:bg-navy-900/95 dark:text-white dark:border-white/10 dark:shadow-lg dark:shadow-navy-950/20"
-          : "bg-white text-navy-900 border-b border-slate-200/60 dark:bg-navy-900 dark:text-white dark:border-b-transparent"
+          ? "bg-white/90 text-navy-900 border-b border-slate-200/50 shadow-sm backdrop-blur dark:bg-navy-950/90 dark:text-white dark:border-white/10 dark:shadow-lg dark:shadow-navy-950/20"
+          : "bg-white/80 text-navy-900 border-b border-slate-200/30 backdrop-blur-sm dark:bg-navy-950/80 dark:text-white dark:border-white/5"
       }`}
     >
       <nav className="container-page flex h-16 items-center justify-between gap-4">

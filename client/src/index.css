@@ -62,15 +62,7 @@
   }
 }
 
-html.snap-scroll {
-  scroll-snap-type: y mandatory;
-}
 
-.snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  scroll-margin-top: 4rem; /* offset for the sticky navbar (h-16) so content doesn't land underneath it */
-}
 
 .admin-page-enter {
   animation: admin-page-enter 420ms ease-out both;
