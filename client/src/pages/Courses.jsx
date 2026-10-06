@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineSearch } from "react-icons/hi";
 import api from "../services/api.js";
 import { SkeletonGrid } from "../components/Loader.jsx";
+import ResponsiveImage from "../components/ResponsiveImage.jsx";
 
 const levels = ["", "Beginner", "Intermediate", "Advanced"];
 
@@ -31,18 +32,25 @@ const Courses = () => {
   }, [search, level, page]);
 
   return (
-    <div>
-      <section className="bg-navy-950 py-14 text-white">
+    <div className="transition-colors duration-200">
+      {/* Header Banner */}
+      <section className="border-b border-slate-200 bg-slate-100 py-14 text-navy-950 transition-colors duration-200 dark:border-transparent dark:bg-navy-950 dark:text-white">
         <div className="container-page">
-          <span className="eyebrow text-brand-400">Courses</span>
-          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">Training built around real hardware</h1>
+          <span className="eyebrow text-brand-600 dark:text-brand-400">Technical Training</span>
+          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+            Training built around real hardware
+          </h1>
+          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+            Hands-on programs covering embedded microcontrollers, IoT edge development, robotics, and industrial automation.
+          </p>
         </div>
       </section>
 
+      {/* Filter and Course Grid */}
       <section className="container-page py-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative w-full sm:max-w-sm">
-            <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-steel" />
+            <HiOutlineSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-mist/40" size={18} />
             <input
               value={search}
               onChange={(e) => {
@@ -50,9 +58,10 @@ const Courses = () => {
                 setSearch(e.target.value);
               }}
               placeholder="Search courses..."
-              className="w-full rounded-md border border-black/10 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-brand-400"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
             />
           </div>
+
           <div className="relative w-full sm:w-72">
             <select
               value={level}
@@ -60,16 +69,17 @@ const Courses = () => {
                 setPage(1);
                 setLevel(e.target.value);
               }}
-              className="w-full appearance-none rounded-md border border-black/10 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-navy-900 outline-none focus:border-brand-400"
+              className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-navy-900 outline-none transition-colors focus:border-brand-500 dark:border-white/10 dark:bg-navy-900 dark:text-white dark:focus:border-brand-400"
             >
-              {levels.map((l) => (
-                <option key={l || "all"} value={l}>
-                  {l || "All Levels"}
+              <option value="">All Levels</option>
+              {levels.filter(Boolean).map((lvl) => (
+                <option key={lvl} value={lvl}>
+                  {lvl}
                 </option>
               ))}
             </select>
             <svg
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-steel"
+              className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-mist/40"
               width="16"
               height="16"
               viewBox="0 0 20 20"
@@ -84,27 +94,35 @@ const Courses = () => {
           {loading ? (
             <SkeletonGrid count={6} />
           ) : courses.length === 0 ? (
-            <p className="py-16 text-center text-steel">No courses match your search.</p>
+            <p className="py-16 text-center text-slate-500 dark:text-mist/50">No courses match your search.</p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {courses.map((c) => (
                 <Link
                   key={c._id}
                   to={`/courses/${c.slug}`}
-                  className="group overflow-hidden rounded-lg border border-black/5 bg-white transition-shadow hover:shadow-lg"
+                  className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-navy-900/60"
                 >
                   {c.image ? (
-                    <img src={c.image} alt={c.title} className="h-40 w-full object-cover" />
+                    <ResponsiveImage
+                      src={c.image}
+                      alt={c.title}
+                      className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      aspectRatio="h-44"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
                   ) : (
-                    <div className="h-40 bg-gradient-to-br from-navy-800 to-brand-700" />
+                    <div className="h-44 bg-gradient-to-br from-navy-800 to-brand-700" />
                   )}
                   <div className="p-5">
-                    <span className="text-xs font-semibold uppercase text-brand-600">{c.level}</span>
-                    <h3 className="mt-1 text-base font-semibold text-navy-900 group-hover:text-brand-600">{c.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-steel">{c.description}</p>
-                    <div className="mt-4 flex items-center justify-between text-sm text-steel">
+                    <span className="text-xs font-semibold uppercase text-brand-600 dark:text-brand-400">{c.level}</span>
+                    <h3 className="mt-1.5 text-base font-bold text-navy-950 group-hover:text-brand-600 transition-colors dark:text-white dark:group-hover:text-brand-400">
+                      {c.title}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 text-sm text-slate-500 dark:text-mist/70 leading-relaxed">{c.description}</p>
+                    <div className="mt-4 flex items-center justify-between text-sm text-slate-500 dark:text-mist/50 border-t border-slate-100 pt-3 dark:border-white/5">
                       <span>{c.duration}</span>
-                      <span className="font-semibold text-navy-900">₹{c.fee}</span>
+                      <span className="font-bold text-navy-950 dark:text-white">₹{c.fee}</span>
                     </div>
                   </div>
                 </Link>
@@ -119,8 +137,10 @@ const Courses = () => {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`h-9 w-9 rounded-md text-sm font-medium ${
-                  page === i + 1 ? "bg-brand-500 text-white" : "bg-mist text-steel hover:bg-brand-50"
+                className={`h-9 w-9 rounded-lg text-sm font-medium transition-colors ${
+                  page === i + 1
+                    ? "bg-brand-500 text-white shadow-md shadow-brand-500/25"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
                 }`}
               >
                 {i + 1}

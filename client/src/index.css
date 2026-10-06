@@ -6,6 +6,15 @@
   html {
     scroll-behavior: smooth;
   }
+  body {
+    @apply transition-colors duration-200 antialiased;
+  }
+  html.light body {
+    @apply bg-white text-navy-950;
+  }
+  html.dark body {
+    @apply bg-navy-950 text-white;
+  }
   h1, h2, h3, h4 {
     @apply font-display;
   }

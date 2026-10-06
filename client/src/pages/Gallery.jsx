@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { HiX, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import api from "../services/api.js";
 import { useContent } from "../hooks/useContent.js";
+import ResponsiveImage from "../components/ResponsiveImage.jsx";
 
 const Gallery = () => {
-  const { content } = useContent();
   const [images, setImages] = useState([]);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
@@ -13,44 +13,54 @@ const Gallery = () => {
   const [loading, setLoading] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const loaderRef = useRef(null);
+  const { content } = useContent();
 
   useEffect(() => {
-    api.get("/gallery-categories").then((res) => setCategories(res.data.data)).catch(() => {});
+    api
+      .get("/gallery-categories")
+      .then((res) => setCategories(res.data.data))
+      .catch(() => {});
+  }, []);
+
+  const fetchImages = useCallback(async (cat, p, replace = false) => {
+    setLoading(true);
+    try {
+      const params = { page: p, limit: 12 };
+      if (cat) params.category = cat;
+      const res = await api.get("/gallery", { params });
+      const newImages = res.data.data;
+      setImages((prev) => (replace ? newImages : [...prev, ...newImages]));
+      setHasMore(newImages.length === 12);
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    setImages([]);
     setPage(1);
-    setHasMore(true);
-  }, [category]);
-
-  useEffect(() => {
-    setLoading(true);
-    const params = { page, limit: 12 };
-    if (category) params.category = category;
-
-    api
-      .get("/gallery", { params })
-      .then((res) => {
-        setImages((prev) => (page === 1 ? res.data.data : [...prev, ...res.data.data]));
-        setHasMore(res.data.pagination.hasMore);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [category, page]);
+    fetchImages(category, 1, true);
+  }, [category, fetchImages]);
 
   useEffect(() => {
     const el = loaderRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) setPage((p) => p + 1);
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          setPage((p) => {
+            const next = p + 1;
+            fetchImages(category, next, false);
+            return next;
+          });
+        }
       },
-      { threshold: 1 }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [hasMore, loading]);
+  }, [hasMore, loading, category, fetchImages]);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const showNext = useCallback(() => setLightboxIndex((i) => (i + 1) % images.length), [images.length]);
@@ -68,19 +78,45 @@ const Gallery = () => {
   }, [lightboxIndex, closeLightbox, showNext, showPrev]);
 
   return (
-    <div>
-      <section className="bg-navy-950 py-14 text-white">
+    <div className="transition-colors duration-200">
+      {/* Header Banner */}
+      <section className="border-b border-slate-200 bg-slate-100 py-14 text-navy-950 transition-colors duration-200 dark:border-transparent dark:bg-navy-950 dark:text-white">
         <div className="container-page">
-          <span className="eyebrow text-brand-400">{content["gallery.header_eyebrow"] || "Gallery"}</span>
-          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">{content["gallery.header_title"] || "Events, workshops and life in the lab"}</h1>
+          <span className="eyebrow text-brand-600 dark:text-brand-400">
+            {content["gallery.header_eyebrow"] || "Gallery"}
+          </span>
+          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+            {content["gallery.header_title"] || "Events, workshops and life in the lab"}
+          </h1>
+          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+            Moments captured from hands-on training sessions, project demos, workshops, and exhibitions.
+          </p>
         </div>
       </section>
 
+      {/* Categories Filter & Grid */}
       <section className="container-page py-10">
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => setCategory("")} className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${category === "" ? "bg-brand-500 text-white" : "bg-mist text-steel hover:bg-brand-50"}`}>All</button>
+          <button
+            onClick={() => setCategory("")}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              category === ""
+                ? "bg-brand-500 text-white shadow-md shadow-brand-500/25"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
+            }`}
+          >
+            All
+          </button>
           {categories.map((cat) => (
-            <button key={cat._id} onClick={() => setCategory(cat.name)} className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${category === cat.name ? "bg-brand-500 text-white" : "bg-mist text-steel hover:bg-brand-50"}`}>
+            <button
+              key={cat._id}
+              onClick={() => setCategory(cat.name)}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                category === cat.name
+                  ? "bg-brand-500 text-white shadow-md shadow-brand-500/25"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
+              }`}
+            >
               {cat.name}
             </button>
           ))}
@@ -88,32 +124,87 @@ const Gallery = () => {
 
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {images.map((img, i) => (
-            <button key={img._id} onClick={() => setLightboxIndex(i)} className="group overflow-hidden rounded-lg border border-black/5 bg-white text-left shadow-sm transition-shadow hover:shadow-lg">
-              <div className="aspect-square overflow-hidden bg-navy-800">
-                <img src={img.image} alt={img.title || img.category} loading="lazy" className="h-full w-full object-contain transition-transform group-hover:scale-105" />
+            <button
+              key={img._id}
+              onClick={() => setLightboxIndex(i)}
+              className="group overflow-hidden rounded-xl border border-slate-200 bg-white text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-navy-900/60"
+            >
+              <div className="aspect-square overflow-hidden bg-slate-100 dark:bg-navy-800">
+                <ResponsiveImage
+                  src={img.image}
+                  alt={img.title || img.category}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  aspectRatio="aspect-square"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
               </div>
               <div className="p-3">
-                <span className="text-[10px] font-semibold uppercase tracking-wide text-brand-600">{img.category}</span>
-                <p className="mt-1 line-clamp-2 text-sm text-navy-900">{img.title || <span className="text-steel">No description added</span>}</p>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+                  {img.category}
+                </span>
+                <p className="mt-1 line-clamp-2 text-sm font-medium text-navy-950 dark:text-white">
+                  {img.title || <span className="text-slate-400 dark:text-mist/40">No description</span>}
+                </p>
               </div>
             </button>
           ))}
         </div>
 
-        {images.length === 0 && !loading && <p className="py-16 text-center text-steel">No images in this category yet.</p>}
+        {images.length === 0 && !loading && (
+          <p className="py-16 text-center text-slate-500 dark:text-mist/50">No images in this category yet.</p>
+        )}
         <div ref={loaderRef} className="h-10" />
-        {loading && <p className="text-center text-sm text-steel">Loading more...</p>}
+        {loading && <p className="text-center text-sm text-slate-500 dark:text-mist/50">Loading more photos...</p>}
       </section>
 
+      {/* Lightbox Modal */}
       {lightboxIndex !== null && images[lightboxIndex] && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4" onClick={closeLightbox}>
-          <button className="absolute right-5 top-5 text-white/80 hover:text-white" onClick={closeLightbox} aria-label="Close"><HiX size={28} /></button>
-          <button className="absolute left-3 text-white/70 hover:text-white sm:left-6" onClick={(e) => { e.stopPropagation(); showPrev(); }} aria-label="Previous image"><HiChevronLeft size={32} /></button>
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md"
+          onClick={closeLightbox}
+        >
+          <button
+            type="button"
+            className="absolute right-5 top-5 text-white/80 hover:text-white"
+            onClick={closeLightbox}
+            aria-label="Close"
+          >
+            <HiX size={30} />
+          </button>
+          <button
+            type="button"
+            className="absolute left-3 text-white/70 hover:text-white sm:left-6"
+            onClick={(e) => {
+              e.stopPropagation();
+              showPrev();
+            }}
+            aria-label="Previous image"
+          >
+            <HiChevronLeft size={36} />
+          </button>
           <div className="flex max-h-[90vh] max-w-[90vw] flex-col items-center" onClick={(e) => e.stopPropagation()}>
-            <img src={images[lightboxIndex].image} alt="" className="max-h-[80vh] max-w-full rounded-md object-contain" />
-            {images[lightboxIndex].title && <p className="mt-3 max-w-lg text-center text-sm text-white/80">{images[lightboxIndex].title}</p>}
+            <img
+              src={images[lightboxIndex].image}
+              alt=""
+              className="max-h-[80vh] max-w-full rounded-lg object-contain shadow-2xl"
+            />
+            {images[lightboxIndex].title && (
+              <p className="mt-3 max-w-lg text-center text-sm font-medium text-white/90">
+                {images[lightboxIndex].title}
+              </p>
+            )}
           </div>
-          <button className="absolute right-3 text-white/70 hover:text-white sm:right-6" onClick={(e) => { e.stopPropagation(); showNext(); }} aria-label="Next image"><HiChevronRight size={32} /></button>
+          <button
+            type="button"
+            className="absolute right-3 text-white/70 hover:text-white sm:right-6"
+            onClick={(e) => {
+              e.stopPropagation();
+              showNext();
+            }}
+            aria-label="Next image"
+          >
+            <HiChevronRight size={36} />
+          </button>
         </div>
       )}
     </div>

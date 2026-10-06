@@ -161,7 +161,9 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files
+// Serve uploaded files with dynamic viewport resizing & WebP optimization
+const { serveOptimizedImage } = require("./utils/imageOptimizer");
+app.use("/uploads", serveOptimizedImage(uploadDir));
 app.use("/uploads", express.static(uploadDir));
 
 app.get("/api/health", (req, res) => res.json({ status: "ok", time: new Date().toISOString() }));

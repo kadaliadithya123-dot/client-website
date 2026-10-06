@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { HiOutlineLocationMarker, HiOutlinePhone, HiOutlineMail } from "react-icons/hi";
+import { HiOutlineLocationMarker, HiOutlinePhone, HiOutlineMail, HiOutlineExternalLink } from "react-icons/hi";
 import api from "../services/api.js";
+import { parsePhoneNumbers, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
 
 const Contact = () => {
   const {
@@ -30,93 +31,153 @@ const Contact = () => {
     }
   };
 
+  const phoneString = settings?.phone || DEFAULT_CONTACT.displayPhone;
+  const phones = parsePhoneNumbers(phoneString);
+  const email = settings?.email || DEFAULT_CONTACT.email;
+  const address = settings?.address || DEFAULT_CONTACT.address;
+  const mapEmbedUrl = settings?.mapEmbedUrl || DEFAULT_CONTACT.mapsEmbedUrl;
+
   return (
-    <div>
-      <section className="bg-navy-950 py-14 text-white">
+    <div className="transition-colors duration-200">
+      {/* Header Banner */}
+      <section className="border-b border-slate-200 bg-slate-100 py-14 text-navy-950 transition-colors duration-200 dark:border-transparent dark:bg-navy-950 dark:text-white">
         <div className="container-page">
-          <span className="eyebrow text-brand-400">Contact</span>
-          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">Let's talk about your project</h1>
+          <span className="eyebrow text-brand-600 dark:text-brand-400">Contact Us</span>
+          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl text-navy-950 dark:text-white">
+            Let's talk about your project & training
+          </h1>
+          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+            Have a project idea, thesis guidance requirement, or want to join a technical training track? Reach out to us.
+          </p>
         </div>
       </section>
 
+      {/* Main Form and Direct Contact */}
       <section className="container-page grid gap-10 py-12 lg:grid-cols-2">
         <div>
-          <h2 className="text-xl font-semibold text-navy-900">Reach us directly</h2>
-          <div className="mt-5 space-y-4 text-sm text-steel">
-            <p className="flex items-start gap-3">
+          <h2 className="text-xl font-semibold text-navy-900 dark:text-white">Reach us directly</h2>
+          <div className="mt-5 space-y-4 text-sm text-slate-600 dark:text-mist/80">
+            {/* Address */}
+            <div className="flex items-start gap-3">
               <HiOutlineLocationMarker className="mt-0.5 shrink-0 text-brand-500" size={20} />
-              {settings?.address || "Sritech Solutions, Ratnaveni Complex, Opp. Budhil Park Hotel, 1st Lane, Dwarakanagar, Visakhapatnam - 530016"}
-            </p>
-            <p className="flex items-center gap-3">
-              <HiOutlinePhone className="text-brand-500" size={20} />
-              {settings?.phone || "99488-32456 / 86886-32456"}
-            </p>
-            <p className="flex items-center gap-3">
-              <HiOutlineMail className="text-brand-500" size={20} />
-              {settings?.email || "sritechsolutions9@gmail.com"}
-            </p>
+              <div>
+                <p className="font-medium text-slate-800 dark:text-mist">{address}</p>
+                <a
+                  href={DEFAULT_CONTACT.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:underline dark:text-brand-400"
+                >
+                  <span>Open in Google Maps</span>
+                  <HiOutlineExternalLink size={12} />
+                </a>
+              </div>
+            </div>
+
+            {/* Click-to-Action Phone Numbers */}
+            <div className="flex items-start gap-3">
+              <HiOutlinePhone className="mt-0.5 shrink-0 text-brand-500" size={20} />
+              <div>
+                <span className="text-xs text-slate-500 dark:text-mist/50 block">Click to Call:</span>
+                <div className="flex flex-wrap gap-x-3 gap-y-1">
+                  {phones.map((p) => (
+                    <a
+                      key={p.tel}
+                      href={p.tel}
+                      className="font-semibold text-slate-900 hover:text-brand-600 transition-colors dark:text-white dark:hover:text-brand-400"
+                      title={`Call ${p.display}`}
+                    >
+                      {p.display}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Click-to-Action Email */}
+            <div className="flex items-start gap-3">
+              <HiOutlineMail className="mt-0.5 shrink-0 text-brand-500" size={20} />
+              <div>
+                <span className="text-xs text-slate-500 dark:text-mist/50 block">Click to Email (Outlook):</span>
+                <a
+                  href={formatMailtoLink(email)}
+                  className="font-semibold text-slate-900 hover:text-brand-600 transition-colors dark:text-white dark:hover:text-brand-400"
+                  title="Launch Microsoft Outlook / Email Client"
+                >
+                  {email}
+                </a>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-8 aspect-video overflow-hidden rounded-lg border border-black/5">
+          {/* Interactive Map preview */}
+          <div className="mt-8 aspect-video overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-navy-950">
             <iframe
               title="Sritech Solutions location"
-              src={
-                settings?.mapEmbedUrl ||
-                "https://www.google.com/maps?q=17.7256389,83.3068333&output=embed"
-              }
+              src={mapEmbedUrl}
               width="100%"
               height="100%"
               style={{ border: 0 }}
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-lg border border-black/5 p-6">
+        {/* Contact Form */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-navy-900/60"
+        >
           <div>
-            <label className="text-sm font-medium text-navy-900">Name</label>
+            <label className="text-sm font-medium text-navy-900 dark:text-white">Name</label>
             <input
               {...register("name", { required: "Name is required" })}
-              className="mt-1 w-full rounded-md border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-400"
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+              placeholder="Your full name"
             />
             {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-medium text-navy-900">Phone</label>
+              <label className="text-sm font-medium text-navy-900 dark:text-white">Phone</label>
               <input
                 {...register("phone", { required: "Phone is required" })}
-                className="mt-1 w-full rounded-md border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-400"
+                className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                placeholder="10-digit mobile number"
               />
               {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
             </div>
             <div>
-              <label className="text-sm font-medium text-navy-900">Email</label>
+              <label className="text-sm font-medium text-navy-900 dark:text-white">Email</label>
               <input
                 type="email"
                 {...register("email", { required: "Email is required" })}
-                className="mt-1 w-full rounded-md border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-400"
+                className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                placeholder="name@example.com"
               />
               {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-medium text-navy-900">Subject</label>
+            <label className="text-sm font-medium text-navy-900 dark:text-white">Subject</label>
             <input
               {...register("subject", { required: "Subject is required" })}
-              className="mt-1 w-full rounded-md border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-400"
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+              placeholder="e.g. Embedded Project Guidance / Course Inquiry"
             />
             {errors.subject && <p className="mt-1 text-xs text-red-500">{errors.subject.message}</p>}
           </div>
 
           <div>
-            <label className="text-sm font-medium text-navy-900">Message</label>
+            <label className="text-sm font-medium text-navy-900 dark:text-white">Message</label>
             <textarea
               rows={4}
               {...register("message", { required: "Message is required" })}
-              className="mt-1 w-full rounded-md border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-400"
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+              placeholder="Please describe your project, branch, year or questions..."
             />
             {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
           </div>
