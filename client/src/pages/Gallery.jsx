@@ -80,15 +80,15 @@ const Gallery = () => {
   return (
     <div className="transition-colors duration-200">
       {/* Header Banner */}
-      <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
+      <section className="border-b border-slate-200 bg-slate-50 py-14 text-slate-900 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">
             {content["gallery.header_eyebrow"] || "Gallery"}
           </span>
-          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
             {content["gallery.header_title"] || "Events, workshops and life in the lab"}
           </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+          <p className="mt-2 text-sm text-slate-700 dark:text-mist/70">
             Moments captured from hands-on training sessions, project demos, workshops, and exhibitions.
           </p>
         </div>
@@ -102,7 +102,7 @@ const Gallery = () => {
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               category === ""
                 ? "bg-brand-500 text-white shadow-md shadow-brand-500/25"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
+                : "border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 dark:border-transparent dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
             }`}
           >
             All
@@ -114,7 +114,7 @@ const Gallery = () => {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 category === cat.name
                   ? "bg-brand-500 text-white shadow-md shadow-brand-500/25"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
+                  : "border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 dark:border-transparent dark:bg-white/5 dark:text-mist/80 dark:hover:bg-white/10"
               }`}
             >
               {cat.name}
@@ -142,7 +142,7 @@ const Gallery = () => {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
                   {img.category}
                 </span>
-                <p className="mt-1 line-clamp-2 text-sm font-medium text-navy-950 dark:text-white">
+                <p className="mt-1 line-clamp-2 text-sm font-medium text-slate-900 dark:text-white">
                   {img.title || <span className="text-slate-400 dark:text-mist/40">No description</span>}
                 </p>
               </div>

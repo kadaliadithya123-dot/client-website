@@ -7,7 +7,7 @@ import FloatingContactWidget from "../components/FloatingContactWidget.jsx";
 import BackToTop from "../components/BackToTop.jsx";
 
 const MainLayout = () => (
-  <div className="flex min-h-screen flex-col bg-white text-navy-900 transition-colors duration-200 dark:bg-navy-950 dark:text-mist">
+  <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-navy-950 dark:text-mist">
     <TopBar />
     <Navbar />
     <main className="flex-1">

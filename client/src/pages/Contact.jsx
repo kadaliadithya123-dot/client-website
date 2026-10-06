@@ -45,10 +45,10 @@ const Contact = () => {
       <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">Contact Us</span>
-          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl text-navy-950 dark:text-white">
+          <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl text-slate-900 dark:text-white">
             Let's talk about your project & training
           </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+          <p className="mt-2 text-sm text-slate-700 dark:text-mist/80">
             Have a project idea, thesis guidance requirement, or want to join a technical training track? Reach out to us.
           </p>
         </div>
@@ -57,7 +57,7 @@ const Contact = () => {
       {/* Main Form and Direct Contact */}
       <section className="container-page grid gap-10 py-12 lg:grid-cols-2">
         <div>
-          <h2 className="text-xl font-semibold text-navy-900 dark:text-white">Reach us directly</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Reach us directly</h2>
           <div className="mt-5 space-y-4 text-sm text-slate-600 dark:text-mist/80">
             {/* Address */}
             <div className="flex items-start gap-3">
@@ -118,9 +118,9 @@ const Contact = () => {
           </div>
 
           {/* Office & Counseling Hours */}
-          <div className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-white/10 dark:bg-navy-900/40">
-            <h3 className="font-semibold text-navy-900 dark:text-white">Office & Embedded Lab Hours</h3>
-            <p className="mt-1 text-xs text-slate-500 dark:text-mist/60">
+          <div className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-navy-900/40">
+            <h3 className="font-semibold text-slate-900 dark:text-white">Office & Embedded Lab Hours</h3>
+            <p className="mt-1 text-xs text-slate-600 dark:text-mist/60">
               Visit our center for live hardware demonstrations, career counseling, and project mentorship.
             </p>
             <div className="mt-4 space-y-2 text-xs">

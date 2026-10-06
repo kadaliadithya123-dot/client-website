@@ -58,17 +58,17 @@ const ProjectDetail = () => {
   return (
     <div className="transition-colors duration-200">
       {/* Header Banner */}
-      <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
+      <section className="border-b border-slate-200 bg-slate-50 py-14 text-slate-900 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <Link to="/projects" className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:underline dark:text-brand-400 mb-3">
             <HiOutlineArrowLeft /> Back to Projects
           </Link>
           <div>
             <span className="eyebrow text-brand-600 dark:text-brand-400">{project.domain}</span>
-            <h1 className="mt-2 max-w-2xl font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+            <h1 className="mt-2 max-w-2xl font-display text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
               {project.title}
             </h1>
-            <div className="mt-5 flex flex-wrap gap-6 text-sm text-slate-600 dark:text-mist/70">
+            <div className="mt-5 flex flex-wrap gap-6 text-sm text-slate-700 dark:text-mist/70">
               <span className="flex items-center gap-2">
                 <HiOutlineChartBar className="text-brand-500" /> {project.difficulty}
               </span>
@@ -125,12 +125,12 @@ const ProjectDetail = () => {
             <div className="aspect-video rounded-xl bg-gradient-to-br from-brand-600 to-navy-900" />
           )}
 
-          <h2 className="mt-8 text-xl font-bold text-navy-950 dark:text-white">Project Overview</h2>
-          <p className="mt-3 leading-relaxed text-slate-600 dark:text-mist/70">{project.description}</p>
+          <h2 className="mt-8 text-xl font-bold text-slate-900 dark:text-white">Project Overview</h2>
+          <p className="mt-3 leading-relaxed text-slate-700 dark:text-mist/70">{project.description}</p>
 
           {project.technologies?.length > 0 && (
             <>
-              <h2 className="mt-8 text-xl font-bold text-navy-950 dark:text-white">Technologies Used</h2>
+              <h2 className="mt-8 text-xl font-bold text-slate-900 dark:text-white">Technologies Used</h2>
               <div className="mt-3 flex flex-wrap gap-2">
                 {project.technologies.map((t) => (
                   <span

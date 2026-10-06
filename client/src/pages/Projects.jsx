@@ -43,10 +43,10 @@ const Projects = () => {
       <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">Projects Showcase</span>
-          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
             Ideas that shipped as working prototypes
           </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+          <p className="mt-2 text-sm text-slate-700 dark:text-mist/80">
             Browse through real final-year, diploma, and innovative embedded projects built by students mentored at SriTech.
           </p>
         </div>
@@ -64,7 +64,7 @@ const Projects = () => {
                 setSearch(e.target.value);
               }}
               placeholder="Search projects..."
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+              className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 shadow-sm outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
             />
           </div>
 
@@ -75,7 +75,7 @@ const Projects = () => {
                 setPage(1);
                 setDomain(e.target.value);
               }}
-              className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-navy-900 outline-none transition-colors focus:border-brand-500 dark:border-white/10 dark:bg-navy-900 dark:text-white dark:focus:border-brand-400"
+              className="w-full appearance-none rounded-lg border border-slate-300 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-slate-900 shadow-sm outline-none transition-colors focus:border-brand-500 dark:border-white/10 dark:bg-navy-900 dark:text-white dark:focus:border-brand-400"
             >
               <option value="">All Domains</option>
               {domains.map((d) => (
@@ -100,14 +100,14 @@ const Projects = () => {
           {loading ? (
             <SkeletonGrid count={6} />
           ) : projects.length === 0 ? (
-            <p className="py-16 text-center text-slate-500 dark:text-mist/50">No projects match your search.</p>
+            <p className="py-16 text-center text-slate-600 dark:text-mist/50">No projects match your search.</p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((p) => (
                 <Link
                   key={p._id}
                   to={`/projects/${p.slug}`}
-                  className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-navy-900/60"
+                  className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-brand-500/40 hover:shadow-xl dark:border-white/10 dark:bg-navy-900/60"
                 >
                   {p.thumbnail ? (
                     <ResponsiveImage
@@ -122,15 +122,15 @@ const Projects = () => {
                   )}
                   <div className="p-5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold uppercase text-brand-600 dark:text-brand-400">{p.domain}</span>
-                      <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-mist/50">
+                      <span className="text-xs font-semibold uppercase text-brand-700 dark:text-brand-400">{p.domain}</span>
+                      <span className="flex items-center gap-1 text-xs text-slate-600 dark:text-mist/50">
                         <HiOutlineUsers /> {p.teamSize}
                       </span>
                     </div>
-                    <h3 className="mt-1.5 text-base font-bold text-navy-950 group-hover:text-brand-600 transition-colors dark:text-white dark:group-hover:text-brand-400">
+                    <h3 className="mt-1.5 text-base font-bold text-slate-900 group-hover:text-brand-600 transition-colors dark:text-white dark:group-hover:text-brand-400">
                       {p.title}
                     </h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-slate-500 dark:text-mist/70 leading-relaxed">{p.description}</p>
+                    <p className="mt-2 line-clamp-2 text-sm text-slate-600 dark:text-mist/70 leading-relaxed">{p.description}</p>
                   </div>
                 </Link>
               ))}

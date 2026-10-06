@@ -71,21 +71,21 @@ const CourseDetail = () => {
   return (
     <div className="transition-colors duration-200">
       {/* Header Banner */}
-      <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
+      <section className="border-b border-slate-200 bg-slate-50 py-14 text-slate-900 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <Link to="/courses" className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:underline dark:text-brand-400 mb-3">
             <HiOutlineArrowLeft /> Back to Courses
           </Link>
           <div>
             <span className="eyebrow text-brand-600 dark:text-brand-400">{course.level}</span>
-            <h1 className="mt-2 max-w-2xl font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+            <h1 className="mt-2 max-w-2xl font-display text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
               {course.title}
             </h1>
-            <div className="mt-5 flex flex-wrap gap-6 text-sm text-slate-600 dark:text-mist/70">
+            <div className="mt-5 flex flex-wrap gap-6 text-sm text-slate-700 dark:text-mist/70">
               <span className="flex items-center gap-2">
                 <HiOutlineClock className="text-brand-500" /> {course.duration}
               </span>
-              <span className="flex items-center gap-2 font-semibold text-navy-950 dark:text-white">
+              <span className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
                 <HiOutlineCurrencyRupee className="text-brand-500" /> ₹{course.fee}
               </span>
               {course.trainer && (
@@ -122,15 +122,15 @@ const CourseDetail = () => {
             </button>
           )}
 
-          <h2 className="text-xl font-bold text-navy-950 dark:text-white">About this course</h2>
-          <p className="mt-3 leading-relaxed text-slate-600 dark:text-mist/70">{course.description}</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">About this course</h2>
+          <p className="mt-3 leading-relaxed text-slate-700 dark:text-mist/70">{course.description}</p>
 
           {course.syllabus?.length > 0 && (
             <>
-              <h2 className="mt-8 text-xl font-bold text-navy-950 dark:text-white">Syllabus & Modules</h2>
+              <h2 className="mt-8 text-xl font-bold text-slate-900 dark:text-white">Syllabus & Modules</h2>
               <ul className="mt-4 space-y-2.5">
                 {course.syllabus.map((s, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-mist/80">
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700 dark:text-mist/80">
                     <HiOutlineCheckCircle className="mt-0.5 shrink-0 text-brand-500" size={18} />
                     <span>{s}</span>
                   </li>
@@ -141,7 +141,7 @@ const CourseDetail = () => {
 
           {course.technologies?.length > 0 && (
             <>
-              <h2 className="mt-8 text-xl font-bold text-navy-950 dark:text-white">Technologies Covered</h2>
+              <h2 className="mt-8 text-xl font-bold text-slate-900 dark:text-white">Technologies Covered</h2>
               <div className="mt-3 flex flex-wrap gap-2">
                 {course.technologies.map((t) => (
                   <span
@@ -159,7 +159,7 @@ const CourseDetail = () => {
         {/* Sidebar Enrollment Card */}
         <aside className="h-fit rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-navy-900/60">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-mist/50">Eligibility</h3>
-          <p className="mt-2 text-sm font-medium text-navy-950 dark:text-white">{course.eligibility || "Open to all engineering & diploma students"}</p>
+          <p className="mt-2 text-sm font-medium text-slate-900 dark:text-white">{course.eligibility || "Open to all engineering & diploma students"}</p>
           <button onClick={() => setModalOpen(true)} className="btn-primary mt-6 w-full">
             Enroll Now
           </button>
@@ -197,8 +197,8 @@ const CourseDetail = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-navy-900">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-navy-950 dark:text-white">Enroll in {course.title}</h2>
-              <button onClick={() => setModalOpen(false)} className="text-slate-400 hover:text-navy-950 dark:text-mist/50 dark:hover:text-white">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Enroll in {course.title}</h2>
+              <button onClick={() => setModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:text-mist/50 dark:hover:text-white">
                 <HiX size={22} />
               </button>
             </div>
@@ -208,7 +208,7 @@ const CourseDetail = () => {
                 <label className="text-xs font-semibold text-slate-700 dark:text-mist/80">Full Name</label>
                 <input
                   {...register("name", { required: "Name is required" })}
-                  className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-navy-900 outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                  className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
                   placeholder="Your full name"
                 />
                 {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
@@ -219,7 +219,7 @@ const CourseDetail = () => {
                 <input
                   type="email"
                   {...register("email", { required: "Email is required" })}
-                  className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-navy-900 outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                  className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
                   placeholder="name@example.com"
                 />
                 {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
@@ -229,7 +229,7 @@ const CourseDetail = () => {
                 <label className="text-xs font-semibold text-slate-700 dark:text-mist/80">Phone</label>
                 <input
                   {...register("phone", { required: "Phone is required" })}
-                  className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-navy-900 outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                  className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
                   placeholder="10-digit mobile number"
                 />
                 {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
@@ -240,7 +240,7 @@ const CourseDetail = () => {
                   <label className="text-xs font-semibold text-slate-700 dark:text-mist/80">College</label>
                   <input
                     {...register("college")}
-                    className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-navy-900 outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                    className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
                     placeholder="e.g. AU COE"
                   />
                 </div>
@@ -248,7 +248,7 @@ const CourseDetail = () => {
                   <label className="text-xs font-semibold text-slate-700 dark:text-mist/80">Branch</label>
                   <input
                     {...register("branch")}
-                    className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-navy-900 outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+                    className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
                     placeholder="e.g. ECE / EEE"
                   />
                 </div>

@@ -41,10 +41,10 @@ const About = () => {
       <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">About SriTech</span>
-          <h1 className="mt-3 max-w-2xl font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+          <h1 className="mt-3 max-w-2xl font-display text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
             Engineering education that ends with a working prototype.
           </h1>
-          <p className="mt-4 max-w-2xl text-slate-600 leading-relaxed dark:text-mist/70">
+          <p className="mt-4 max-w-2xl text-slate-700 leading-relaxed dark:text-mist/80">
             We focus on Embedded Systems - specialized computing systems designed to perform dedicated
             functions within larger devices - and we guide students through Innovative and Final Year Projects.
           </p>
@@ -54,23 +54,23 @@ const About = () => {
       {/* Mission & Vision & Expertise */}
       <section className="section container-page grid gap-10 lg:grid-cols-2">
         <div>
-          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">Our Mission</h2>
-          <p className="mt-3 text-slate-600 leading-relaxed dark:text-mist/70">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Our Mission</h2>
+          <p className="mt-3 text-slate-700 leading-relaxed dark:text-mist/80">
             {content["about.mission"] ||
               "To bridge the gap between theoretical learning and industrial applications through practical and innovative solutions - for students, and for the industries we partner with."}
           </p>
-          <h2 className="mt-8 text-2xl font-bold text-navy-950 dark:text-white">Our Vision</h2>
-          <p className="mt-3 text-slate-600 leading-relaxed dark:text-mist/70">
+          <h2 className="mt-8 text-2xl font-bold text-slate-900 dark:text-white">Our Vision</h2>
+          <p className="mt-3 text-slate-700 leading-relaxed dark:text-mist/80">
             {content["about.vision"] ||
               "To be the trusted partner for embedded innovation in the region - where students build skills that transfer directly into industry, and where companies find dependable hardware and automation partners."}
           </p>
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">Our Expertise</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Our Expertise</h2>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2">
             {expertise.map((item) => (
-              <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-mist/80">
+              <li key={item} className="flex items-start gap-2.5 text-sm font-medium text-slate-700 dark:text-mist/80">
                 <HiOutlineCheckCircle className="mt-0.5 shrink-0 text-brand-500" size={18} />
                 <span>{item}</span>
               </li>
@@ -80,15 +80,15 @@ const About = () => {
       </section>
 
       {/* Our Journey Timeline */}
-      <section className="section border-y border-slate-200/80 bg-slate-50 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60">
+      <section className="section border-y border-slate-200 bg-white transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60">
         <div className="container-page">
-          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">Our Journey</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Our Journey</h2>
           <div className="mt-8 space-y-6 border-l-2 border-brand-500/40 pl-6">
             {timeline.map((item, index) => (
               <div key={`${item.year}-${index}`} className="relative">
                 <span className="absolute -left-[31px] top-1 h-3 w-3 rounded-full bg-brand-500 ring-4 ring-brand-500/20" />
                 <span className="text-sm font-bold text-brand-600 dark:text-brand-400">{item.year}</span>
-                <p className="mt-1 text-slate-600 dark:text-mist/70 leading-relaxed">{item.text}</p>
+                <p className="mt-1 text-slate-700 dark:text-mist/80 leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>
@@ -97,18 +97,18 @@ const About = () => {
 
       {/* Students & Industries */}
       <section className="section container-page">
-        <h2 className="text-2xl font-bold text-navy-950 dark:text-white">Students We Support</h2>
-        <p className="mt-2 max-w-2xl text-slate-600 leading-relaxed dark:text-mist/70">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Students We Support</h2>
+        <p className="mt-2 max-w-2xl text-slate-700 leading-relaxed dark:text-mist/80">
           {content["about.students_support"] ||
             "Diploma, B.Tech and M.Tech students across Electronics, Telecommunications, Instrumentation, Biomedical and Computer Science."}
         </p>
 
-        <h2 className="mt-10 text-2xl font-bold text-navy-950 dark:text-white">Industries Served</h2>
+        <h2 className="mt-10 text-2xl font-bold text-slate-900 dark:text-white">Industries Served</h2>
         <div className="mt-4 flex flex-wrap gap-2.5">
           {industries.map((industry) => (
             <span
               key={industry}
-              className="rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-medium text-brand-700 dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-300"
+              className="rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700 dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-300"
             >
               {industry}
             </span>

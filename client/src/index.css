@@ -10,13 +10,13 @@
     @apply transition-colors duration-200 antialiased;
   }
   html.light body {
-    @apply bg-white text-navy-950;
+    @apply bg-slate-50 text-slate-900;
   }
   html.dark body {
     @apply bg-navy-950 text-white;
   }
   h1, h2, h3, h4 {
-    @apply font-display;
+    @apply font-display text-slate-900 dark:text-white;
   }
   :focus-visible {
     outline: 2px solid #1f77f5;
@@ -29,7 +29,7 @@
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500;
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-700 hover:shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600;
   }
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm transition-colors hover:bg-slate-50 dark:border-white/30 dark:bg-transparent dark:text-white dark:hover:bg-white/10;
@@ -38,7 +38,7 @@
     @apply py-16 sm:py-20;
   }
   .eyebrow {
-    @apply text-sm font-semibold text-brand-600;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700 dark:border-brand-400/30 dark:bg-brand-500/10 dark:text-brand-300;
   }
 }
 

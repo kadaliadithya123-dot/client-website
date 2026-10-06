@@ -37,10 +37,10 @@ const Courses = () => {
       <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">Technical Training</span>
-          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
             Training built around real hardware
           </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-mist/70">
+          <p className="mt-2 text-sm text-slate-700 dark:text-mist/80">
             Hands-on programs covering embedded microcontrollers, IoT edge development, robotics, and industrial automation.
           </p>
         </div>
@@ -58,7 +58,7 @@ const Courses = () => {
                 setSearch(e.target.value);
               }}
               placeholder="Search courses..."
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-navy-900 outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
+              className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 shadow-sm outline-none transition-colors focus:border-brand-500 focus:ring-1 focus:ring-brand-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:focus:border-brand-400"
             />
           </div>
 
@@ -69,7 +69,7 @@ const Courses = () => {
                 setPage(1);
                 setLevel(e.target.value);
               }}
-              className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-navy-900 outline-none transition-colors focus:border-brand-500 dark:border-white/10 dark:bg-navy-900 dark:text-white dark:focus:border-brand-400"
+              className="w-full appearance-none rounded-lg border border-slate-300 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-slate-900 shadow-sm outline-none transition-colors focus:border-brand-500 dark:border-white/10 dark:bg-navy-900 dark:text-white dark:focus:border-brand-400"
             >
               <option value="">All Levels</option>
               {levels.filter(Boolean).map((lvl) => (
@@ -94,14 +94,14 @@ const Courses = () => {
           {loading ? (
             <SkeletonGrid count={6} />
           ) : courses.length === 0 ? (
-            <p className="py-16 text-center text-slate-500 dark:text-mist/50">No courses match your search.</p>
+            <p className="py-16 text-center text-slate-600 dark:text-mist/50">No courses match your search.</p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {courses.map((c) => (
                 <Link
                   key={c._id}
                   to={`/courses/${c.slug}`}
-                  className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-navy-900/60"
+                  className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-brand-500/40 hover:shadow-xl dark:border-white/10 dark:bg-navy-900/60"
                 >
                   {c.image ? (
                     <ResponsiveImage
@@ -115,14 +115,14 @@ const Courses = () => {
                     <div className="h-44 bg-gradient-to-br from-navy-800 to-brand-700" />
                   )}
                   <div className="p-5">
-                    <span className="text-xs font-semibold uppercase text-brand-600 dark:text-brand-400">{c.level}</span>
-                    <h3 className="mt-1.5 text-base font-bold text-navy-950 group-hover:text-brand-600 transition-colors dark:text-white dark:group-hover:text-brand-400">
+                    <span className="text-xs font-semibold uppercase text-brand-700 dark:text-brand-400">{c.level}</span>
+                    <h3 className="mt-1.5 text-base font-bold text-slate-900 group-hover:text-brand-600 transition-colors dark:text-white dark:group-hover:text-brand-400">
                       {c.title}
                     </h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-slate-500 dark:text-mist/70 leading-relaxed">{c.description}</p>
-                    <div className="mt-4 flex items-center justify-between text-sm text-slate-500 dark:text-mist/50 border-t border-slate-100 pt-3 dark:border-white/5">
+                    <p className="mt-2 line-clamp-2 text-sm text-slate-600 dark:text-mist/70 leading-relaxed">{c.description}</p>
+                    <div className="mt-4 flex items-center justify-between text-sm text-slate-600 dark:text-mist/50 border-t border-slate-200/70 pt-3 dark:border-white/5">
                       <span>{c.duration}</span>
-                      <span className="font-bold text-navy-950 dark:text-white">₹{c.fee}</span>
+                      <span className="font-bold text-slate-900 dark:text-white">₹{c.fee}</span>
                     </div>
                   </div>
                 </Link>

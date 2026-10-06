@@ -109,10 +109,10 @@ const Home = () => {
             <span className="eyebrow inline-block max-w-full rounded-full bg-brand-500/10 px-3.5 py-1 text-xs font-semibold leading-relaxed text-brand-600 sm:text-sm dark:text-brand-400">
               {content["home.hero.badge"] || "Embedded Systems • Automation • Student Innovation"}
             </span>
-            <h1 className="mt-5 font-display text-4xl font-bold leading-tight text-navy-950 sm:text-5xl lg:text-6xl dark:text-white">
+            <h1 className="mt-5 font-display text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
               {content["home.hero.title"] || "We engineer the dedicated systems inside tomorrow's devices."}
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-600 dark:text-mist/70">
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-700 dark:text-mist/80">
               {content["home.hero.subtitle"] ||
                 "SriTech Embedded Projects designs embedded hardware and software, builds industrial automation, and trains students from Diploma to M.Tech to take real projects from idea to working prototype."}
             </p>
@@ -156,22 +156,22 @@ const Home = () => {
           </motion.div>
         </div>
 
-        {/* Stats Row Container — crisp light theme card surface */}
+        {/* Stats Row Container — crisp white card surface on slate-50 */}
         <div className="container-page relative pb-10">
-          <div className="grid grid-cols-2 gap-6 rounded-2xl border border-slate-200 bg-slate-50/90 p-6 shadow-sm sm:grid-cols-4 sm:p-8 dark:border-white/10 dark:bg-white/5">
+          <div className="grid grid-cols-2 gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-4 sm:p-8 dark:border-white/10 dark:bg-white/5">
             {stats.map((s) => (
               <div key={s.label} className="text-center">
-                <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
+                <div className="font-display text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">
                   {loading ? "0" : <CountUp value={s.value} suffix={s.suffix} />}
                 </div>
-                <div className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-mist/50">{s.label}</div>
+                <div className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-mist/60">{s.label}</div>
               </div>
             ))}
             <div className="text-center">
-              <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
+              <div className="font-display text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">
                 {visitorCount == null ? "0" : <CountUp value={visitorCount} formatter={formatCount} />}
               </div>
-              <div className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-mist/50">{settings?.branchesSupportedLabel || "Visitors"}</div>
+              <div className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-mist/60">{settings?.branchesSupportedLabel || "Visitors"}</div>
             </div>
           </div>
         </div>
@@ -180,16 +180,16 @@ const Home = () => {
       {/* ABOUT SNAPSHOT SECTION — clean light theme background with border */}
       <motion.section
         {...fadeUpProps}
-        className="relative flex flex-col justify-center overflow-hidden border-y border-slate-200 bg-slate-50 py-16 text-navy-950 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-900 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden border-y border-slate-200 bg-slate-50 py-16 text-slate-900 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-900 dark:text-white"
       >
         <div className="absolute -left-32 top-1/3 h-80 w-80 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <div>
             <span className="eyebrow text-brand-600 dark:text-brand-400">Who We Are</span>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl text-slate-900 dark:text-white">
               Practical engineering, taught and delivered by practitioners.
             </h2>
-            <p className="mt-4 max-w-xl text-slate-600 leading-relaxed dark:text-mist/70">
+            <p className="mt-4 max-w-xl text-slate-700 leading-relaxed dark:text-mist/80">
               We focus on Embedded Systems — specialized computing built to perform dedicated functions
               inside larger devices — and we bridge the gap between theoretical learning and industrial
               application through hands-on solutions and mentorship.
@@ -229,7 +229,7 @@ const Home = () => {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <span className="eyebrow text-brand-600 dark:text-brand-400">Latest Projects</span>
-              <h2 className="mt-2 text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
+              <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">
                 From concept board to working prototype
               </h2>
             </div>
@@ -267,11 +267,11 @@ const Home = () => {
                         <div className="h-44 bg-gradient-to-br from-brand-600 to-navy-900" />
                       )}
                       <div className="p-5">
-                        <span className="text-xs font-semibold uppercase text-brand-600 dark:text-brand-400">{p.domain}</span>
-                        <h3 className="mt-1 text-base font-bold text-navy-950 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400">
+                        <span className="text-xs font-semibold uppercase text-brand-700 dark:text-brand-400">{p.domain}</span>
+                        <h3 className="mt-1 text-base font-bold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400">
                           {p.title}
                         </h3>
-                        <p className="mt-2 line-clamp-2 text-sm text-slate-500 dark:text-mist/70">{p.description}</p>
+                        <p className="mt-2 line-clamp-2 text-sm text-slate-600 dark:text-mist/70">{p.description}</p>
                       </div>
                     </Link>
                   </motion.div>
@@ -292,7 +292,7 @@ const Home = () => {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <span className="eyebrow text-brand-600 dark:text-brand-400">Latest Courses</span>
-              <h2 className="mt-2 text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">Build real skills, not just theory</h2>
+              <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">Build real skills, not just theory</h2>
             </div>
             <Link to="/courses" className="font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
               View all courses →
@@ -328,12 +328,12 @@ const Home = () => {
                         <div className="h-44 bg-gradient-to-br from-navy-800 to-brand-700" />
                       )}
                       <div className="p-5">
-                        <span className="text-xs font-semibold uppercase text-brand-600 dark:text-brand-400">{c.level}</span>
-                        <h3 className="mt-1 text-base font-bold text-navy-950 dark:text-white">{c.title}</h3>
-                        <p className="mt-2 line-clamp-2 text-sm text-slate-500 dark:text-mist/60">{c.description}</p>
-                        <div className="mt-4 flex items-center justify-between text-sm text-slate-500 dark:text-mist/50">
+                        <span className="text-xs font-semibold uppercase text-brand-700 dark:text-brand-400">{c.level}</span>
+                        <h3 className="mt-1 text-base font-bold text-slate-900 dark:text-white">{c.title}</h3>
+                        <p className="mt-2 line-clamp-2 text-sm text-slate-600 dark:text-mist/70">{c.description}</p>
+                        <div className="mt-4 flex items-center justify-between text-sm text-slate-600 dark:text-mist/60">
                           <span>{c.duration}</span>
-                          <span className="font-semibold text-navy-950 dark:text-white">₹{c.fee}</span>
+                          <span className="font-semibold text-slate-900 dark:text-white">₹{c.fee}</span>
                         </div>
                       </div>
                     </Link>
@@ -353,7 +353,7 @@ const Home = () => {
         >
           <div className="container-page">
             <span className="eyebrow text-brand-600 dark:text-brand-400">Gallery</span>
-            <h2 className="mt-2 text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">Life at SriTech</h2>
+            <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">Life at SriTech</h2>
             <motion.div
               variants={staggerParent}
               initial="hidden"
@@ -389,8 +389,8 @@ const Home = () => {
       >
         <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative">
-          <h2 className="text-2xl font-bold sm:text-4xl text-navy-950 dark:text-white">Have a project idea or training need?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-slate-600 dark:text-mist/70">
+          <h2 className="text-2xl font-bold sm:text-4xl text-slate-900 dark:text-white">Have a project idea or training need?</h2>
+          <p className="mx-auto mt-3 max-w-xl text-slate-700 dark:text-mist/80">
             Talk to our team about final year projects, industrial automation, or training programs
             tailored to your branch and year.
           </p>
