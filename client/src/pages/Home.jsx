@@ -382,10 +382,10 @@ const Home = () => {
         </motion.section>
       )}
 
-      {/* CONTACT CTA SECTION — light theme gradient banner with border */}
+      {/* CONTACT CTA SECTION */}
       <motion.section
         {...fadeUpProps}
-        className="relative flex flex-col items-center justify-center overflow-hidden border-t border-slate-200 bg-gradient-to-br from-brand-50/70 via-slate-50 to-white py-16 text-center text-navy-950 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-950 dark:text-white"
+        className="relative flex flex-col items-center justify-center overflow-hidden border-t border-slate-200 bg-gradient-to-br from-brand-50/70 via-slate-50 to-white py-16 text-center text-slate-900 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-900 dark:bg-none dark:text-white"
       >
         <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative">

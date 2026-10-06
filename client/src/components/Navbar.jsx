@@ -78,10 +78,10 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* Get in Touch CTA Button */}
+          {/* Get in Touch CTA Button - visible on desktop, hidden on mobile where it is inside the dropdown drawer */}
           <Link
             to="/contact"
-            className="btn-primary !px-4 !py-2 text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm"
+            className="hidden lg:inline-flex btn-primary !px-4 !py-2 text-xs sm:text-sm items-center gap-1.5 shadow-sm"
           >
             Get in Touch
           </Link>
