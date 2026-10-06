@@ -78,15 +78,13 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* Get in Touch CTA Button - automatically removed from navbar when dropdown menu appears */}
-          {!open && (
-            <Link
-              to="/contact"
-              className="btn-primary !px-3 !py-1.5 text-xs sm:!px-4 sm:!py-2 sm:text-sm inline-flex items-center gap-1.5 shadow-sm"
-            >
-              Get in Touch
-            </Link>
-          )}
+          {/* Get in Touch CTA Button - visible on desktop, automatically removed whenever dropdown menu is active (< lg) */}
+          <Link
+            to="/contact"
+            className="hidden lg:inline-flex btn-primary !px-4 !py-2 text-sm items-center gap-1.5 shadow-sm"
+          >
+            Get in Touch
+          </Link>
 
           {/* Mobile Menu Hamburger */}
           <button
