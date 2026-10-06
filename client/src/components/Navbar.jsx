@@ -4,7 +4,7 @@ import { HiMenu, HiX, HiPhone, HiOutlineSun, HiOutlineMoon, HiOutlineMail } from
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext.jsx";
 import api from "../services/api.js";
-import { parsePhoneNumbers, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
+import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
 
 const links = [
   { to: "/", label: "Home" },
@@ -34,10 +34,14 @@ const Navbar = () => {
       .catch(() => {});
   }, []);
 
-  const phoneString = settings?.phone || DEFAULT_CONTACT.displayPhone;
-  const phones = parsePhoneNumbers(phoneString);
+  const phones = parsePhoneNumbers(
+    settings?.phones && settings.phones.length > 0 ? settings.phones : settings?.phone || DEFAULT_CONTACT.phones
+  );
   const primaryPhone = phones[0] || { display: "+91 99488 32456", tel: "tel:+919948832456" };
-  const email = settings?.email || DEFAULT_CONTACT.email;
+  const emails = parseEmailAddresses(
+    settings?.emails && settings.emails.length > 0 ? settings.emails : settings?.email || DEFAULT_CONTACT.emails
+  );
+  const primaryEmail = emails[0] || DEFAULT_CONTACT.email;
 
   return (
     <header
@@ -159,13 +163,16 @@ const Navbar = () => {
                       <span>{p.display}</span>
                     </a>
                   ))}
-                  <a
-                    href={formatMailtoLink(email)}
-                    className="flex items-center gap-2 text-slate-600 hover:text-brand-600 dark:text-mist/80 dark:hover:text-brand-400"
-                  >
-                    <HiOutlineMail size={14} className="text-brand-500" />
-                    <span className="truncate">{email}</span>
-                  </a>
+                  {emails.map((em) => (
+                    <a
+                      key={em}
+                      href={formatMailtoLink(em)}
+                      className="flex items-center gap-2 text-slate-600 hover:text-brand-600 dark:text-mist/80 dark:hover:text-brand-400"
+                    >
+                      <HiOutlineMail size={14} className="text-brand-500 shrink-0" />
+                      <span className="truncate">{em}</span>
+                    </a>
+                  ))}
                 </div>
               </div>
 

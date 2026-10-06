@@ -23,9 +23,12 @@ const Footer = () => {
       .catch(() => {});
   }, []);
 
-  const phoneString = settings?.phone || DEFAULT_CONTACT.displayPhone;
-  const phones = parsePhoneNumbers(phoneString);
-  const email = settings?.email || DEFAULT_CONTACT.email;
+  const phones = parsePhoneNumbers(
+    settings?.phones && settings.phones.length > 0 ? settings.phones : settings?.phone || DEFAULT_CONTACT.phones
+  );
+  const emails = parseEmailAddresses(
+    settings?.emails && settings.emails.length > 0 ? settings.emails : settings?.email || DEFAULT_CONTACT.emails
+  );
   const address = settings?.address || DEFAULT_CONTACT.address;
 
   return (
@@ -92,10 +95,10 @@ const Footer = () => {
             </li>
             <li className="flex items-start gap-2">
               <HiOutlinePhone className="mt-0.5 shrink-0 text-brand-500" size={16} />
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col gap-1">
                 {phones.map((p) => (
                   <a
-                    key={p.tel}
+                    key={p.tel + p.display}
                     href={p.tel}
                     className="font-medium text-slate-800 hover:text-brand-600 transition-colors dark:text-mist dark:hover:text-brand-400"
                     title={`Click to call ${p.display}`}
@@ -105,15 +108,20 @@ const Footer = () => {
                 ))}
               </div>
             </li>
-            <li className="flex items-center gap-2">
-              <HiOutlineMail className="shrink-0 text-brand-500" size={16} />
-              <a
-                href={formatMailtoLink(email)}
-                className="font-medium text-slate-800 hover:text-brand-600 transition-colors dark:text-mist dark:hover:text-brand-400 truncate"
-                title="Launch Microsoft Outlook / Email Client"
-              >
-                {email}
-              </a>
+            <li className="flex items-start gap-2">
+              <HiOutlineMail className="mt-0.5 shrink-0 text-brand-500" size={16} />
+              <div className="flex flex-col gap-1">
+                {emails.map((em) => (
+                  <a
+                    key={em}
+                    href={formatMailtoLink(em)}
+                    className="font-medium text-slate-800 hover:text-brand-600 transition-colors dark:text-mist dark:hover:text-brand-400 truncate"
+                    title={`Email ${em} (Outlook)`}
+                  >
+                    {em}
+                  </a>
+                ))}
+              </div>
             </li>
           </ul>
         </div>

@@ -14,8 +14,12 @@ const GoogleMapSection = () => {
   }, []);
 
   const address = settings?.address || DEFAULT_CONTACT.address;
-  const phone = settings?.phone ? settings.phone.split(/[/|,]/)[0].trim() : DEFAULT_CONTACT.primaryPhone;
-  const email = settings?.email || DEFAULT_CONTACT.email;
+  const phone =
+    settings?.phones?.[0] ||
+    (settings?.phone ? settings.phone.split(/[/|,]/)[0].trim() : DEFAULT_CONTACT.primaryPhone);
+  const email =
+    settings?.emails?.[0] ||
+    (settings?.email ? settings.email.split(/[,/|]/)[0].trim() : DEFAULT_CONTACT.email);
   const mapEmbedUrl = settings?.mapEmbedUrl || DEFAULT_CONTACT.mapsEmbedUrl;
   const mapsUrl = DEFAULT_CONTACT.mapsUrl;
 

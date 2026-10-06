@@ -16,9 +16,13 @@ const FloatingContactWidget = () => {
       .catch(() => {});
   }, []);
 
-  const phone = settings?.whatsapp || settings?.phone || DEFAULT_CONTACT.whatsapp;
-  const primaryPhone = settings?.phone ? settings.phone.split(/[/|,]/)[0].trim() : DEFAULT_CONTACT.primaryPhone;
-  const email = settings?.email || DEFAULT_CONTACT.email;
+  const phone = settings?.whatsapp || settings?.phones?.[0] || settings?.phone || DEFAULT_CONTACT.whatsapp;
+  const primaryPhone =
+    settings?.phones?.[0] ||
+    (settings?.phone ? settings.phone.split(/[/|,]/)[0].trim() : DEFAULT_CONTACT.primaryPhone);
+  const email =
+    settings?.emails?.[0] ||
+    (settings?.email ? settings.email.split(/[,/|]/)[0].trim() : DEFAULT_CONTACT.email);
 
   const actions = [
     {

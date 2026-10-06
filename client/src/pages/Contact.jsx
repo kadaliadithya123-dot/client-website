@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiOutlineLocationMarker, HiOutlinePhone, HiOutlineMail, HiOutlineExternalLink } from "react-icons/hi";
 import api from "../services/api.js";
-import { parsePhoneNumbers, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
+import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
 
 const Contact = () => {
   const {
@@ -31,9 +31,12 @@ const Contact = () => {
     }
   };
 
-  const phoneString = settings?.phone || DEFAULT_CONTACT.displayPhone;
-  const phones = parsePhoneNumbers(phoneString);
-  const email = settings?.email || DEFAULT_CONTACT.email;
+  const phones = parsePhoneNumbers(
+    settings?.phones && settings.phones.length > 0 ? settings.phones : settings?.phone || DEFAULT_CONTACT.phones
+  );
+  const emails = parseEmailAddresses(
+    settings?.emails && settings.emails.length > 0 ? settings.emails : settings?.email || DEFAULT_CONTACT.emails
+  );
   const address = settings?.address || DEFAULT_CONTACT.address;
   const mapEmbedUrl = settings?.mapEmbedUrl || DEFAULT_CONTACT.mapsEmbedUrl;
 
@@ -99,13 +102,18 @@ const Contact = () => {
               <HiOutlineMail className="mt-0.5 shrink-0 text-brand-500" size={20} />
               <div>
                 <span className="text-xs text-slate-500 dark:text-mist/50 block">Click to Email (Outlook):</span>
-                <a
-                  href={formatMailtoLink(email)}
-                  className="font-semibold text-slate-900 hover:text-brand-600 transition-colors dark:text-white dark:hover:text-brand-400"
-                  title="Launch Microsoft Outlook / Email Client"
-                >
-                  {email}
-                </a>
+                <div className="flex flex-col gap-1 mt-0.5">
+                  {emails.map((em) => (
+                    <a
+                      key={em}
+                      href={formatMailtoLink(em)}
+                      className="font-semibold text-slate-900 hover:text-brand-600 transition-colors dark:text-white dark:hover:text-brand-400"
+                      title={`Launch Microsoft Outlook for ${em}`}
+                    >
+                      {em}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

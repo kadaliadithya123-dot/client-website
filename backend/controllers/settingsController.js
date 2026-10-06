@@ -62,6 +62,24 @@ const getOrCreateSettings = async () => {
     }
   }
 
+  if (!settings.phones || settings.phones.length === 0) {
+    if (settings.phone) {
+      settings.phones = settings.phone.split(/[/|,]/).map((s) => s.trim()).filter(Boolean);
+    } else {
+      settings.phones = ["+91 99488 32456", "+91 86886 32456"];
+    }
+    changed = true;
+  }
+
+  if (!settings.emails || settings.emails.length === 0) {
+    if (settings.email) {
+      settings.emails = settings.email.split(/[,|/]/).map((s) => s.trim()).filter(Boolean);
+    } else {
+      settings.emails = ["sritechsolutions9@gmail.com"];
+    }
+    changed = true;
+  }
+
   if (changed) await settings.save();
   else await settings.save();
 
@@ -87,7 +105,9 @@ const EDITABLE_FIELDS = [
   "about",
   "address",
   "phone",
+  "phones",
   "email",
+  "emails",
   "whatsapp",
   "mapEmbedUrl",
   "studentsTrained",
@@ -112,6 +132,15 @@ const updateSettings = async (req, res, next) => {
     for (const field of EDITABLE_FIELDS) {
       if (req.body[field] === undefined) continue;
       settings[field] = NUMERIC_FIELDS.includes(field) ? Number(req.body[field]) || 0 : req.body[field];
+    }
+
+    if (Array.isArray(req.body.phones)) {
+      settings.phones = req.body.phones.map((p) => String(p).trim()).filter(Boolean);
+      settings.phone = settings.phones.join(" / ");
+    }
+    if (Array.isArray(req.body.emails)) {
+      settings.emails = req.body.emails.map((e) => String(e).trim()).filter(Boolean);
+      settings.email = settings.emails.join(", ");
     }
 
     if (req.body.social && typeof req.body.social === "object") {

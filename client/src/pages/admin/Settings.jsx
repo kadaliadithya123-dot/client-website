@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { HiEye, HiEyeOff } from "react-icons/hi";
+import { HiEye, HiEyeOff, HiPlus, HiTrash } from "react-icons/hi";
 import api from "../../services/api.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 
@@ -13,11 +13,33 @@ const Settings = () => {
   const [visiblePasswords, setVisiblePasswords] = useState({ current: false, next: false });
   const [pwSaving, setPwSaving] = useState(false);
 
+  const normalizeSettings = (data) => {
+    if (!data) return data;
+    const phones =
+      Array.isArray(data.phones) && data.phones.length > 0
+        ? data.phones
+        : data.phone
+        ? data.phone.split(/[/|,]/).map((s) => s.trim()).filter(Boolean)
+        : [""];
+    const emails =
+      Array.isArray(data.emails) && data.emails.length > 0
+        ? data.emails
+        : data.email
+        ? data.email.split(/[,/|]/).map((s) => s.trim()).filter(Boolean)
+        : [""];
+
+    return {
+      ...data,
+      phones: phones.length > 0 ? phones : [""],
+      emails: emails.length > 0 ? emails : [""],
+    };
+  };
+
   useEffect(() => {
     api
       .get("/settings")
       .then((res) => {
-        if (!savedOnceRef.current) setSettings(res.data.data);
+        if (!savedOnceRef.current) setSettings(normalizeSettings(res.data.data));
       })
       .catch(() => {});
   }, []);
@@ -26,12 +48,65 @@ const Settings = () => {
   const handleSocialChange = (field, value) =>
     setSettings((s) => ({ ...s, social: { ...s.social, [field]: value } }));
 
+  // Dynamic phone handlers
+  const handlePhoneChange = (index, value) => {
+    setSettings((s) => {
+      const next = [...(s.phones || [""])];
+      next[index] = value;
+      return { ...s, phones: next };
+    });
+  };
+
+  const handleAddPhone = () => {
+    setSettings((s) => ({
+      ...s,
+      phones: [...(s.phones || []), ""],
+    }));
+  };
+
+  const handleRemovePhone = (index) => {
+    setSettings((s) => {
+      const next = (s.phones || []).filter((_, i) => i !== index);
+      return { ...s, phones: next.length > 0 ? next : [""] };
+    });
+  };
+
+  // Dynamic email handlers
+  const handleEmailChange = (index, value) => {
+    setSettings((s) => {
+      const next = [...(s.emails || [""])];
+      next[index] = value;
+      return { ...s, emails: next };
+    });
+  };
+
+  const handleAddEmail = () => {
+    setSettings((s) => ({
+      ...s,
+      emails: [...(s.emails || []), ""],
+    }));
+  };
+
+  const handleRemoveEmail = (index) => {
+    setSettings((s) => {
+      const next = (s.emails || []).filter((_, i) => i !== index);
+      return { ...s, emails: next.length > 0 ? next : [""] };
+    });
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
+      const cleanedPhones = (settings.phones || []).map((p) => p.trim()).filter(Boolean);
+      const cleanedEmails = (settings.emails || []).map((em) => em.trim()).filter(Boolean);
+
       const payload = {
         ...settings,
+        phones: cleanedPhones,
+        emails: cleanedEmails,
+        phone: cleanedPhones.join(" / "),
+        email: cleanedEmails.join(", "),
         studentsTrained: Number(settings.studentsTrained) || 0,
         projectsDelivered: Number(settings.projectsDelivered) || 0,
         industryPartners: Number(settings.industryPartners) || 0,
@@ -43,7 +118,7 @@ const Settings = () => {
       };
       const res = await api.put("/settings", payload);
       savedOnceRef.current = true;
-      setSettings(res.data.data);
+      setSettings(normalizeSettings(res.data.data));
       toast.success("Settings updated");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update settings");
@@ -78,7 +153,7 @@ const Settings = () => {
         <p className="mt-1 text-sm text-steel">Signed in as {admin?.email}</p>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-4 rounded-lg border border-black/5 bg-white p-6">
+      <form onSubmit={handleSave} className="space-y-5 rounded-lg border border-black/5 bg-white p-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-steel">Company Information</h2>
         <input
           value={settings.companyName || ""}
@@ -143,33 +218,108 @@ const Settings = () => {
           The 4th stat's number now tracks real site visits automatically — only its label is editable.
         </p>
 
+        {/* Contact Details with Dynamic Multi-fields */}
         <h2 className="pt-2 text-sm font-semibold uppercase tracking-wide text-steel">Contact Details</h2>
-        <input
-          value={settings.address || ""}
-          onChange={(e) => handleChange("address", e.target.value)}
-          placeholder="Address"
-          className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-        />
-        <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="text-xs text-steel">Office Address</label>
           <input
-            value={settings.phone || ""}
-            onChange={(e) => handleChange("phone", e.target.value)}
-            placeholder="Phone"
-            className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-          />
-          <input
-            value={settings.email || ""}
-            onChange={(e) => handleChange("email", e.target.value)}
-            placeholder="Email"
-            className="rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+            value={settings.address || ""}
+            onChange={(e) => handleChange("address", e.target.value)}
+            placeholder="Address"
+            className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
           />
         </div>
-        <input
-          value={settings.whatsapp || ""}
-          onChange={(e) => handleChange("whatsapp", e.target.value)}
-          placeholder="WhatsApp Number"
-          className="w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
-        />
+
+        {/* Phone Numbers Multi-field */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold uppercase tracking-wider text-steel">
+              Phone Numbers ({settings.phones?.length || 0})
+            </label>
+            <button
+              type="button"
+              onClick={handleAddPhone}
+              className="inline-flex items-center gap-1 rounded border border-brand-500/30 bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-600 transition-colors hover:bg-brand-500 hover:text-white"
+            >
+              <HiPlus size={14} /> Add Phone
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            {(settings.phones || [""]).map((phoneVal, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <input
+                  value={phoneVal}
+                  onChange={(e) => handlePhoneChange(idx, e.target.value)}
+                  placeholder={`Phone ${idx + 1} (e.g. +91 99488 32456)`}
+                  className="flex-1 rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                />
+                {(settings.phones || []).length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemovePhone(idx)}
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-red-200 text-red-500 transition-colors hover:bg-red-50"
+                    title="Remove phone number"
+                    aria-label="Remove phone number"
+                  >
+                    <HiTrash size={16} />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Email Addresses Multi-field */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold uppercase tracking-wider text-steel">
+              Email Addresses ({settings.emails?.length || 0})
+            </label>
+            <button
+              type="button"
+              onClick={handleAddEmail}
+              className="inline-flex items-center gap-1 rounded border border-brand-500/30 bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-600 transition-colors hover:bg-brand-500 hover:text-white"
+            >
+              <HiPlus size={14} /> Add Email
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            {(settings.emails || [""]).map((emailVal, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <input
+                  type="email"
+                  value={emailVal}
+                  onChange={(e) => handleEmailChange(idx, e.target.value)}
+                  placeholder={`Email ${idx + 1} (e.g. projects@sritechsolution.com)`}
+                  className="flex-1 rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+                />
+                {(settings.emails || []).length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveEmail(idx)}
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-red-200 text-red-500 transition-colors hover:bg-red-50"
+                    title="Remove email address"
+                    aria-label="Remove email address"
+                  >
+                    <HiTrash size={16} />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="text-xs text-steel">WhatsApp Number</label>
+          <input
+            value={settings.whatsapp || ""}
+            onChange={(e) => handleChange("whatsapp", e.target.value)}
+            placeholder="WhatsApp Number (e.g. +91 99488-32456)"
+            className="mt-1 w-full rounded-md border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-400"
+          />
+        </div>
 
         <h2 className="pt-2 text-sm font-semibold uppercase tracking-wide text-steel">Social Media Links</h2>
         <div className="grid grid-cols-2 gap-3">

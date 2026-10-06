@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { HiOutlinePhone, HiOutlineMail, HiOutlineLocationMarker, HiOutlineClock } from "react-icons/hi";
 import api from "../services/api.js";
-import { parsePhoneNumbers, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
+import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
 
 const TopBar = () => {
   const [settings, setSettings] = useState(null);
@@ -13,9 +13,12 @@ const TopBar = () => {
       .catch(() => {});
   }, []);
 
-  const phoneString = settings?.phone || DEFAULT_CONTACT.displayPhone;
-  const phones = parsePhoneNumbers(phoneString);
-  const email = settings?.email || DEFAULT_CONTACT.email;
+  const phones = parsePhoneNumbers(
+    settings?.phones && settings.phones.length > 0 ? settings.phones : settings?.phone || DEFAULT_CONTACT.phones
+  );
+  const emails = parseEmailAddresses(
+    settings?.emails && settings.emails.length > 0 ? settings.emails : settings?.email || DEFAULT_CONTACT.emails
+  );
 
   return (
     <div className="bg-slate-100 text-slate-700 border-b border-slate-200 text-xs transition-colors duration-200 dark:bg-navy-950 dark:text-mist/70 dark:border-white/10">
@@ -27,7 +30,7 @@ const TopBar = () => {
             <span className="text-slate-500 dark:text-mist/50">Call:</span>
             <div className="flex items-center gap-1.5">
               {phones.map((p, idx) => (
-                <span key={p.tel} className="inline-flex items-center">
+                <span key={p.tel + p.display} className="inline-flex items-center">
                   <a
                     href={p.tel}
                     className="font-semibold text-slate-800 hover:text-brand-600 transition-colors dark:text-mist dark:hover:text-brand-400"
@@ -43,13 +46,20 @@ const TopBar = () => {
 
           <div className="hidden sm:flex items-center gap-1.5">
             <HiOutlineMail className="text-brand-500 shrink-0" size={14} />
-            <a
-              href={formatMailtoLink(email)}
-              className="hover:text-brand-600 transition-colors dark:hover:text-brand-400 font-medium"
-              title="Launch Microsoft Outlook / Email Client"
-            >
-              {email}
-            </a>
+            <div className="flex items-center gap-1.5">
+              {emails.map((em, idx) => (
+                <span key={em} className="inline-flex items-center">
+                  <a
+                    href={formatMailtoLink(em)}
+                    className="hover:text-brand-600 transition-colors dark:hover:text-brand-400 font-medium"
+                    title={`Launch Microsoft Outlook for ${em}`}
+                  >
+                    {em}
+                  </a>
+                  {idx < emails.length - 1 && <span className="mx-1 text-slate-300 dark:text-white/20">|</span>}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 
