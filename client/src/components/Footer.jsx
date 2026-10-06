@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { HiOutlinePhone, HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
 import api from "../services/api.js";
-import { parsePhoneNumbers, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
+import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
 
 const socialIcons = [
   { key: "facebook", Icon: FaFacebookF },

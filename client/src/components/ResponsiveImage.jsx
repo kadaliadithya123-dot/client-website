@@ -89,7 +89,7 @@ const ResponsiveImage = ({
         sizes={sizes}
         alt={alt}
         loading={priority ? "eager" : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
+        fetchpriority={priority ? "high" : undefined}
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
