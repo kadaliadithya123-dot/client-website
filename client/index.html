@@ -1,9 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sritech Solutions | Embedded Systems Training & Solutions</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("sritech_theme");
+          if (saved === "light") {
+            document.documentElement.classList.remove("dark");
+            document.documentElement.classList.add("light");
+            document.documentElement.style.colorScheme = "light";
+          } else {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+            document.documentElement.style.colorScheme = "dark";
+          }
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
     <meta
       name="description"
       content="SriTech Solutions is a leading embedded systems and software development company in Visakhapatnam offering embedded systems training, IoT development, IEEE projects, engineering projects, internships, industrial training, web development, full stack development, AI solutions, and innovative technology services for students and industries."
@@ -29,7 +47,7 @@
       rel="stylesheet"
     />
   </head>
-  <body class="font-body bg-white text-navy-900 dark:bg-navy-950 dark:text-white transition-colors duration-200">
+  <body class="font-body bg-navy-950 text-white transition-colors duration-200">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

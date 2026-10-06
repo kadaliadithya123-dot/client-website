@@ -6,10 +6,7 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem("sritech_theme");
     if (saved === "light" || saved === "dark") return saved;
-    // Default to dark theme as current site default, or check system preference
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-      return "light";
-    }
+    // Default to dark theme when first opening the site
     return "dark";
   });
 
