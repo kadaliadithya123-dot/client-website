@@ -70,8 +70,8 @@ const CourseDetail = () => {
 
   return (
     <div className="transition-colors duration-200">
-      {/* Header Banner — smooth gradual transition without dividing lines */}
-      <section className="bg-gradient-to-b from-slate-100/60 via-slate-50/40 to-transparent py-14 text-navy-950 transition-colors duration-300 dark:from-navy-900/50 dark:via-navy-950/40 dark:to-transparent dark:text-white">
+      {/* Header Banner */}
+      <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <Link to="/courses" className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:underline dark:text-brand-400 mb-3">
             <HiOutlineArrowLeft /> Back to Courses

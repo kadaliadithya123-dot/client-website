@@ -24,7 +24,7 @@ const GoogleMapSection = () => {
   const mapsUrl = DEFAULT_CONTACT.mapsUrl;
 
   return (
-    <section className="bg-gradient-to-b from-transparent via-slate-50/40 to-slate-100/50 py-14 transition-colors duration-300 dark:from-transparent dark:via-navy-950/60 dark:to-navy-950">
+    <section className="border-t border-slate-200 bg-slate-50 py-14 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60">
       <div className="container-page">
         {/* Header & Quick Actions */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6">

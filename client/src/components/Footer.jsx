@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { HiOutlinePhone, HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
 import api from "../services/api.js";
 import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
@@ -8,7 +8,6 @@ import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTA
 const socialIcons = [
   { key: "facebook", Icon: FaFacebookF },
   { key: "instagram", Icon: FaInstagram },
-  { key: "linkedin", Icon: FaLinkedinIn },
   { key: "youtube", Icon: FaYoutube },
 ];
 
@@ -32,7 +31,7 @@ const Footer = () => {
   const address = settings?.address || DEFAULT_CONTACT.address;
 
   return (
-    <footer className="bg-slate-100/60 text-slate-600 transition-colors duration-300 dark:bg-navy-950 dark:text-mist/70">
+    <footer className="bg-slate-100 text-slate-700 border-t border-slate-200 transition-colors duration-200 dark:bg-navy-950 dark:text-mist/70 dark:border-white/10">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         {/* Company Overview */}
         <div>
@@ -127,7 +126,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-slate-200/50 py-5 text-center text-xs text-slate-500 transition-colors dark:border-white/5 dark:text-mist/50">
+      <div className="border-t border-slate-200 py-5 text-center text-xs text-slate-600 transition-colors dark:border-white/10 dark:text-mist/50">
         © {year} {settings?.companyName || "Sritech Solutions"}. All rights reserved.
         <span className="mx-2 text-slate-300 dark:text-white/20">|</span>
         Designed by{" "}

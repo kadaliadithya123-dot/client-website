@@ -92,7 +92,7 @@ const Home = () => {
       {/* HERO SECTION — responsive light/dark theme */}
       <motion.section
         {...fadeUpProps}
-        className="relative flex flex-col justify-center overflow-hidden bg-gradient-to-b from-white via-slate-50/30 to-slate-50/60 text-navy-950 transition-colors duration-300 dark:from-navy-950 dark:via-navy-950 dark:to-navy-900/40 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden bg-white text-navy-950 transition-colors duration-200 dark:bg-navy-950 dark:text-white"
       >
         <div
           className="absolute inset-0 opacity-20 dark:opacity-40"
@@ -136,7 +136,7 @@ const Home = () => {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="relative flex items-center justify-center"
           >
-            <div className="relative w-full max-w-sm rounded-2xl border border-slate-200 bg-slate-50/90 p-6 shadow-xl backdrop-blur transition-colors dark:border-white/10 dark:bg-white/5">
+            <div className="relative w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-xl backdrop-blur transition-colors dark:border-white/10 dark:bg-white/5">
               <div className="flex items-center justify-between text-xs text-slate-500 dark:text-mist/50">
                 <span className="font-mono">board-status.log</span>
                 <span className="flex gap-1.5">
@@ -156,29 +156,31 @@ const Home = () => {
           </motion.div>
         </div>
 
-        {/* Stats Row — seamless flow without dividing border line */}
-        <div className="container-page relative grid grid-cols-2 gap-6 py-8 transition-colors sm:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
-                {loading ? "0" : <CountUp value={s.value} suffix={s.suffix} />}
+        {/* Stats Row Container — crisp light theme card surface */}
+        <div className="container-page relative pb-10">
+          <div className="grid grid-cols-2 gap-6 rounded-2xl border border-slate-200 bg-slate-50/90 p-6 shadow-sm sm:grid-cols-4 sm:p-8 dark:border-white/10 dark:bg-white/5">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
+                  {loading ? "0" : <CountUp value={s.value} suffix={s.suffix} />}
+                </div>
+                <div className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-mist/50">{s.label}</div>
               </div>
-              <div className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-mist/50">{s.label}</div>
+            ))}
+            <div className="text-center">
+              <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
+                {visitorCount == null ? "0" : <CountUp value={visitorCount} formatter={formatCount} />}
+              </div>
+              <div className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-mist/50">{settings?.branchesSupportedLabel || "Visitors"}</div>
             </div>
-          ))}
-          <div className="text-center">
-            <div className="font-display text-2xl font-bold text-navy-950 sm:text-3xl dark:text-white">
-              {visitorCount == null ? "0" : <CountUp value={visitorCount} formatter={formatCount} />}
-            </div>
-            <div className="mt-1 text-xs text-slate-500 sm:text-sm dark:text-mist/50">{settings?.branchesSupportedLabel || "Visitors"}</div>
           </div>
         </div>
       </motion.section>
 
-      {/* ABOUT SNAPSHOT SECTION — soft continuous gradient, no harsh dividing line */}
+      {/* ABOUT SNAPSHOT SECTION — clean light theme background with border */}
       <motion.section
         {...fadeUpProps}
-        className="relative flex flex-col justify-center overflow-hidden bg-gradient-to-b from-slate-50/60 via-slate-50/30 to-white py-16 text-navy-950 transition-colors duration-300 sm:py-20 dark:from-navy-900/40 dark:via-navy-950/70 dark:to-navy-950 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden border-y border-slate-200 bg-slate-50 py-16 text-navy-950 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-900 dark:text-white"
       >
         <div className="absolute -left-32 top-1/3 h-80 w-80 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
@@ -218,10 +220,10 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* PROJECTS SECTION — seamless light/dark ambient flow */}
+      {/* PROJECTS SECTION — crisp white canvas in light theme */}
       <motion.section
         {...fadeUpProps}
-        className="section flex flex-col justify-center bg-gradient-to-b from-white via-slate-50/30 to-slate-50/50 py-16 transition-colors duration-300 sm:py-20 dark:from-navy-950 dark:via-navy-900/30 dark:to-navy-950"
+        className="section flex flex-col justify-center bg-white py-16 transition-colors duration-200 sm:py-20 dark:bg-navy-950"
       >
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -280,10 +282,10 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* COURSES SECTION — subtle gentle tint without hard dividing cut */}
+      {/* COURSES SECTION — defined light theme section with border */}
       <motion.section
         {...fadeUpProps}
-        className="relative flex flex-col justify-center overflow-hidden bg-gradient-to-b from-slate-50/50 via-slate-50/30 to-white py-16 text-navy-950 transition-colors duration-300 sm:py-20 dark:from-navy-950 dark:via-navy-900/35 dark:to-navy-950 dark:text-white"
+        className="relative flex flex-col justify-center overflow-hidden border-y border-slate-200 bg-slate-50 py-16 text-navy-950 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-900 dark:text-white"
       >
         <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-brand-700/10 blur-3xl" />
         <div className="container-page relative">
@@ -343,11 +345,11 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* GALLERY PREVIEW SECTION — seamless soft blend */}
+      {/* GALLERY PREVIEW SECTION — crisp white canvas in light theme */}
       {gallery.length > 0 && (
         <motion.section
           {...fadeUpProps}
-          className="section flex flex-col justify-center bg-gradient-to-b from-white via-slate-50/20 to-slate-50/40 py-16 transition-colors duration-300 sm:py-20 dark:from-navy-950 dark:via-navy-950 dark:to-navy-900/25"
+          className="section flex flex-col justify-center bg-white py-16 transition-colors duration-200 sm:py-20 dark:bg-navy-950"
         >
           <div className="container-page">
             <span className="eyebrow text-brand-600 dark:text-brand-400">Gallery</span>
@@ -380,10 +382,10 @@ const Home = () => {
         </motion.section>
       )}
 
-      {/* CONTACT CTA SECTION — soft fading gradient into GoogleMap */}
+      {/* CONTACT CTA SECTION — light theme gradient banner with border */}
       <motion.section
         {...fadeUpProps}
-        className="relative flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50/40 via-slate-100/40 to-transparent py-16 text-center text-navy-950 transition-colors duration-300 sm:py-20 dark:from-navy-900/25 dark:via-navy-900/40 dark:to-transparent dark:text-white"
+        className="relative flex flex-col items-center justify-center overflow-hidden border-t border-slate-200 bg-gradient-to-br from-brand-50/70 via-slate-50 to-white py-16 text-center text-navy-950 transition-colors duration-200 sm:py-20 dark:border-white/10 dark:bg-navy-950 dark:text-white"
       >
         <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="container-page relative">

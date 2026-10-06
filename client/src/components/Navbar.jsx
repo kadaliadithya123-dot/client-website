@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { HiMenu, HiX, HiPhone, HiOutlineSun, HiOutlineMoon, HiOutlineMail } from "react-icons/hi";
+import { HiMenu, HiX, HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext.jsx";
-import api from "../services/api.js";
-import { parsePhoneNumbers, parseEmailAddresses, formatMailtoLink, DEFAULT_CONTACT } from "../utils/contactUtils.js";
 
 const links = [
   { to: "/", label: "Home" },
@@ -18,7 +16,6 @@ const links = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [settings, setSettings] = useState(null);
   const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -27,28 +24,12 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    api
-      .get("/settings")
-      .then((res) => setSettings(res.data.data))
-      .catch(() => {});
-  }, []);
-
-  const phones = parsePhoneNumbers(
-    settings?.phones && settings.phones.length > 0 ? settings.phones : settings?.phone || DEFAULT_CONTACT.phones
-  );
-  const primaryPhone = phones[0] || { display: "+91 99488 32456", tel: "tel:+919948832456" };
-  const emails = parseEmailAddresses(
-    settings?.emails && settings.emails.length > 0 ? settings.emails : settings?.email || DEFAULT_CONTACT.emails
-  );
-  const primaryEmail = emails[0] || DEFAULT_CONTACT.email;
-
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 text-navy-900 border-b border-slate-200/50 shadow-sm backdrop-blur dark:bg-navy-950/90 dark:text-white dark:border-white/10 dark:shadow-lg dark:shadow-navy-950/20"
-          : "bg-white/80 text-navy-900 border-b border-slate-200/30 backdrop-blur-sm dark:bg-navy-950/80 dark:text-white dark:border-white/5"
+          ? "bg-white/95 text-navy-900 border-b border-slate-200 shadow-sm backdrop-blur dark:bg-navy-950/90 dark:text-white dark:border-white/10 dark:shadow-lg dark:shadow-navy-950/20"
+          : "bg-white text-navy-900 border-b border-slate-200 dark:bg-navy-950 dark:text-white dark:border-white/5"
       }`}
     >
       <nav className="container-page flex h-16 items-center justify-between gap-4">
@@ -80,18 +61,8 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Right Actions: Prominent Call Link, Theme Switcher, CTA, Hamburger */}
+        {/* Right Actions: Theme Switcher, Get in Touch CTA, Hamburger */}
         <div className="flex items-center gap-2.5">
-          {/* Prominent Header Phone Link (Desktop & Tablet) */}
-          <a
-            href={primaryPhone.tel}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-brand-500/25 bg-brand-50/90 px-3.5 py-1.5 text-xs font-semibold text-brand-600 shadow-sm transition-all hover:bg-brand-500 hover:text-white hover:shadow-brand-500/20 dark:border-brand-400/30 dark:bg-brand-500/10 dark:text-brand-300 dark:hover:bg-brand-500 dark:hover:text-white"
-            title={`Click to call ${primaryPhone.display}`}
-          >
-            <HiPhone size={14} className="animate-pulse text-brand-500 dark:text-brand-400" />
-            <span className="whitespace-nowrap">{primaryPhone.display}</span>
-          </a>
-
           {/* Theme Toggle Button */}
           <button
             type="button"
@@ -107,20 +78,13 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* Explore Projects CTA Button */}
-          <Link to="/projects" className="btn-primary hidden md:inline-flex !px-4 !py-2 text-xs sm:text-sm">
-            Explore Projects
-          </Link>
-
-          {/* Mobile Phone Quick Action */}
-          <a
-            href={primaryPhone.tel}
-            className="grid h-9 w-9 place-items-center rounded-lg border border-brand-500/30 bg-brand-50 text-brand-600 sm:hidden dark:border-brand-500/20 dark:bg-brand-500/10 dark:text-brand-400"
-            title="Call SriTech"
-            aria-label="Call SriTech"
+          {/* Get in Touch CTA Button */}
+          <Link
+            to="/contact"
+            className="btn-primary !px-4 !py-2 text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm"
           >
-            <HiPhone size={16} />
-          </a>
+            Get in Touch
+          </Link>
 
           {/* Mobile Menu Hamburger */}
           <button
@@ -144,38 +108,6 @@ const Navbar = () => {
             className="overflow-hidden border-b border-slate-200 bg-white lg:hidden dark:border-white/10 dark:bg-navy-900"
           >
             <div className="container-page flex flex-col gap-1.5 py-4">
-              {/* Mobile Prominent Phone & Email Banner */}
-              <div className="mb-3 rounded-lg border border-brand-500/20 bg-brand-50/60 p-3 space-y-2 dark:border-white/10 dark:bg-white/5">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-                    Contact Sritech
-                  </span>
-                  <span className="text-[11px] text-slate-500 dark:text-mist/50">Visakhapatnam</span>
-                </div>
-                <div className="flex flex-col gap-1.5 text-xs">
-                  {phones.map((p) => (
-                    <a
-                      key={p.tel}
-                      href={p.tel}
-                      className="flex items-center gap-2 font-semibold text-slate-800 hover:text-brand-600 dark:text-mist dark:hover:text-brand-400"
-                    >
-                      <HiPhone size={14} className="text-brand-500" />
-                      <span>{p.display}</span>
-                    </a>
-                  ))}
-                  {emails.map((em) => (
-                    <a
-                      key={em}
-                      href={formatMailtoLink(em)}
-                      className="flex items-center gap-2 text-slate-600 hover:text-brand-600 dark:text-mist/80 dark:hover:text-brand-400"
-                    >
-                      <HiOutlineMail size={14} className="text-brand-500 shrink-0" />
-                      <span className="truncate">{em}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
               {/* Navigation Links */}
               {links.map((l) => (
                 <NavLink
@@ -197,11 +129,11 @@ const Navbar = () => {
 
               <div className="pt-2">
                 <Link
-                  to="/projects"
+                  to="/contact"
                   onClick={() => setOpen(false)}
                   className="btn-primary w-full text-center"
                 >
-                  Explore Projects
+                  Get in Touch
                 </Link>
               </div>
             </div>

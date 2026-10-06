@@ -39,8 +39,8 @@ const Projects = () => {
 
   return (
     <div className="transition-colors duration-200">
-      {/* Header Banner — smooth gradual transition without dividing lines */}
-      <section className="bg-gradient-to-b from-slate-100/60 via-slate-50/40 to-transparent py-14 text-navy-950 transition-colors duration-300 dark:from-navy-900/50 dark:via-navy-950/40 dark:to-transparent dark:text-white">
+      {/* Header Banner */}
+      <section className="border-b border-slate-200 bg-slate-50 py-14 text-navy-950 transition-colors duration-200 dark:border-white/10 dark:bg-navy-900/60 dark:text-white">
         <div className="container-page">
           <span className="eyebrow text-brand-600 dark:text-brand-400">Projects Showcase</span>
           <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl text-navy-950 dark:text-white">

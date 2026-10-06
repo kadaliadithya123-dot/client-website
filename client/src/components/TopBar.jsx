@@ -21,7 +21,7 @@ const TopBar = () => {
   );
 
   return (
-    <div className="bg-slate-100/60 text-slate-700 border-b border-slate-200/40 text-xs transition-colors duration-300 dark:bg-navy-950 dark:text-mist/70 dark:border-white/5">
+    <div className="bg-slate-50 text-slate-700 border-b border-slate-200 text-xs transition-colors duration-200 dark:bg-navy-950 dark:text-mist/70 dark:border-white/10">
       <div className="container-page flex flex-wrap items-center justify-between py-2 gap-y-1.5 gap-x-4">
         {/* Left: Contact Info */}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
