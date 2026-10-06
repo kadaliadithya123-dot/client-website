@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 html {
   scroll-behavior: smooth;
@@ -147,6 +146,8 @@ html.dark .eyebrow {
   background-color: rgba(59, 130, 246, 0.1);
   color: #93c5fd;
 }
+
+@tailwind utilities;
 
 /* Skeleton loader shimmer */
 .skeleton {
